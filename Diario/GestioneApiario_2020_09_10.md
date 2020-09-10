@@ -11,7 +11,7 @@
 |--------------|------------------------------|
 |10:05 - 11:35 |Iniziato documentazione       |
 |12:30 - 14:00 | scrittto analisi dominio e iniziato requisiti|
-|14:00 - 15:45 | Analizzato requisiti, scritto diario|
+|14:00 - 15:45 | Analizzato requisiti, scritto diario e file read me|
 
 ##  Problemi riscontrati e soluzioni adottate
 

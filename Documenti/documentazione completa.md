@@ -133,7 +133,8 @@
   -   Che conoscenze teoriche bisogna avere/acquisire per poter operare
       efficacemente nel dominio?
 
-  -   …
+  Per un apicoltore è importante tenere organizzate le informazioni sulle proprie arnie, e finché ce ne sono giusto un paio la loro gestione è abbastanza semplice. Se però questo apicoltore decidesse di aquistare piu arnie la loro gestione potrebbe complicarsi, ed è qui che potrebbe servire questo sw di gestione per le api.
+  L'apicoltore potrà gestire facilmente le arnie tramite una pagina web. Si possono trovare molti software simili con cui risolvere il problema.  
 
 ### Analisi e specifica dei requisiti
 
@@ -143,20 +144,26 @@
   di rispondere alle seguenti domande:
 
   -   Quali sono i bisogni del committente?
+      Deve poter gestire n arnie.
 
   -   Quali funzioni deve svolgere il prodotto?
-
+      Salvare annotazioni, salvare informazioni (trattamenti sanitari ecc), un calendario con notifiche al termine degli eventi, meteo calendario e diario sincronizzati.
+      
   -   Come devono essere implementate?
+      Web server WAMP, info (diario, calendario, ecc) salvate in un DB, pagina html con php.
 
   -   L’utente, come vorrebbe/dovrebbe interagire con il prodotto?
+      Dovrà accedere al suo profilo dalla pagina web per poter vedere e gestire le sue arnie.
 
   -   Come verrà utilizzato il prodotto?
 
   -   Che tipo di interfaccia si immagina?
+      Pagina HTML.
 
   -   Che prestazioni minime deve fornire il prodotto?
 
   -   Che grado di sicurezza deve avere il prodotto?
+      Accesso con proprio profilo.
 
   -   …
 
@@ -174,11 +181,13 @@
 
 
 
-  |**ID**	|**Nome**			|**Priorità**|**Vers**|**Note**  |
-  |----|------------|--------|----|------|
-  |Req-12|Dovrà esserci una maschera di login|1|1.0|...|
-  |Req-13|Si dovranno poter immettere nuovi allievi|1|1.0|...|
-  |Req-14|Dovrà essere possibile la ricerca di allievi|1|1.0|...|
+  |**ID**	|**Nome**	|**Descrizione**|**Priorità**|
+  |----|------------|--------|----|
+  |Req-1|Web Server funzionante|Avere un web server|1|
+  |Req-2|Dovrà esserci una maschera di login||1|
+  |Req-2|Dovrà esserci una maschera di login||1|
+  |Req-2|Dovrà esserci una maschera di login||1|
+  |Req-10|Dovrà esserci una maschera di login||1|
   
   
 
@@ -189,6 +198,8 @@
 **ID**: identificativo univoco del requisito
 
 **Nome**: breve descrizione del requisito
+
+**Descrizione**: descrizione del requisito
 
 **Priorità**: indica l’importanza di un requisito nell’insieme del
 progetto, definita assieme al committente. Ad esempio poter disporre di

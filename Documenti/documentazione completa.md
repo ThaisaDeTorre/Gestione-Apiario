@@ -138,34 +138,17 @@
 
 ### Analisi e specifica dei requisiti
 
-  Il progettista, dopo aver ricevuto il mandato, in collaborazione con il
-  committente redige una lista di requisiti. Durante questi incontri,
-  tramite interviste (da inserire nei diari), il progettista deve cercare
-  di rispondere alle seguenti domande:
+  il progettista deve cercare di rispondere alle seguenti domande:
 
-  -   Quali sono i bisogni del committente?
-      Deve poter gestire n arnie.
+  Il committente deve poter gestire un numero indeterminato di arnie, deve poter salvare annotazioni in un diario digitale per ogni arnia (ad esempio segnare quando sono stati fatti i trattamenti sanitari ecc.) e avere un calendario sincronizzato con il diario e la meteo che allo scadere degli aventi invia una notifica.
+  
+  La gestione dell'apiario avverrà tramite web, l'utente dovrà loggarsi con il suo utente e per poter gestire le sue arnie utilizzeré una pagina HTML come interfaccia grafica. Il tutto sarà quindi gestito tramite un web server (WAMP, dati salvati su un db o un file, pagina gestione api html con php).
 
-  -   Quali funzioni deve svolgere il prodotto?
-      Salvare annotazioni, salvare informazioni (trattamenti sanitari ecc), un calendario con notifiche al termine degli eventi, meteo calendario e diario sincronizzati.
-      
-  -   Come devono essere implementate?
-      Web server WAMP, info (diario, calendario, ecc) salvate in un DB, pagina html con php.
-
-  -   L’utente, come vorrebbe/dovrebbe interagire con il prodotto?
-      Dovrà accedere al suo profilo dalla pagina web per poter vedere e gestire le sue arnie.
 
   -   Come verrà utilizzato il prodotto?
 
-  -   Che tipo di interfaccia si immagina?
-      Pagina HTML.
-
   -   Che prestazioni minime deve fornire il prodotto?
 
-  -   Che grado di sicurezza deve avere il prodotto?
-      Accesso con proprio profilo.
-
-  -   …
 
   In base alla lista dei requisiti e all’analisi degli stessi, il
   progettista redige una *specifica dei requisiti* in cui elenca e

@@ -167,10 +167,16 @@
   |**ID**	|**Nome**	|**Descrizione**|**Priorità**|
   |----|------------|--------|----|
   |Req-1|Web Server funzionante|Avere un web server|1|
-  |Req-2|Dovrà esserci una maschera di login||1|
-  |Req-2|Dovrà esserci una maschera di login||1|
-  |Req-2|Dovrà esserci una maschera di login||1|
-  |Req-10|Dovrà esserci una maschera di login||1|
+  |Req-2|Interfaccia grafica|Pagina HTML|1|
+  |Req-3|Diario|Ogni arnia avrà a disposizione un diario nel quale si possono inserire e salvare eventuali annotazioni|1|
+  |Req-4|Calendario|Tutte le attività registrate dovranno essere visibili sul calendario con indicata la durata dell'attività|1|
+  |Req-5|Notifiche|Alla scadenza di ogni attività verrà inviata una notifica (tramite pop-up oppure email)|1|
+  |Req-6|Inserimento numero arnie |L’apicoltore dovrà poter inserire il numero desiderato di arnie|1|
+  |Req-7|Ape regina|Ogni arnia avrà salvata la data dell'anno di nascita dell'ape regina|1|
+  |Req-8|Maschera di login|Dovrà esserci una maschera dove l'utente si logga|1|
+  |Req-9|Trattamenti sanitari|Per ogni arnia sarà possibile indicare quando sono stati fatti i trattamenti sanitari e per quanti giorni|1|
+  |Req-10|Meteo|Nel diario/calendario verranno registrate le info meteo della zona, sfruttando qualche servizio meteo geografico|2|
+
   
   
 

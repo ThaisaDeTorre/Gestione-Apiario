@@ -160,7 +160,7 @@ funzionalità del prodotto.
 ### Pianificazione
 
 Gantt preventivo:
-![Gantt](https://github.com/ThaisaDeTorre/Gestione-Apiario/Documenti/gantt_preventivo.png)
+![Gantt](https://github.com/ThaisaDeTorre/Gestione-Apiario/blob/master/Documenti/gantt_preventivo.png)
 
 ### Analisi dei mezzi
 

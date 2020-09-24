@@ -16,7 +16,7 @@
 
 
 #### Mandato:
-[QdC_Primo Semestre - GestioneApiario]('https://github.com/ThaisaDeTorre/Gestione-Apiario/blob/master/Documenti/QdC_Primo Semestre - GestioneApiario.docx')
+[QdC_Primo Semestre - GestioneApiario](https://github.com/ThaisaDeTorre/Gestione-Apiario/blob/master/Documenti/QdC_Primo_Semestre_GestioneApiario.docx)
 
 #### Struttura:
 - [Codice](https://github.com/ThaisaDeTorre/Gestione-Apiario/blob/master/src/)

@@ -23,6 +23,6 @@
 
 - [Documentazione](Documenti/Documentazione.md)
 
-- [Gantt](link)
+- [Gantt](https://github.com/ThaisaDeTorre/Gestione-Apiario/blob/master/Documenti/gantt_preventivo.png)
 
 - [Diari di lavoro](Diario/)

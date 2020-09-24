@@ -51,15 +51,14 @@
 
 ### Informazioni sul progetto
 
-  In questo capitolo raccogliere le informazioni relative al progetto, ad esempio:
+  **Responsabile progetto:** Luca Muggiasca
 
-  -   Allievo/i e docente/i coinvolti nel progetto e rispettivi ruoli,
+  **Autore:** Thaisa De Torre
 
-  -   scuola ,sezione, materia/e,
+  **Inizio:** 03.09.2020
 
-  -   date di inizio e termine di consegna,
+  **Consegna:** 17.12.2020
 
-  -   …
 
 ### Abstract
 

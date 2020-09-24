@@ -21,8 +21,8 @@
 #### Struttura:
 - [Codice](src/)
 
-- [Documentazione](Documenti/Documentazione.md)
+- [Documentazione](https://github.com/ThaisaDeTorre/Gestione-Apiario/blob/master/Documenti/Documentazione.md)
 
 - [Gantt](https://github.com/ThaisaDeTorre/Gestione-Apiario/blob/master/Documenti/gantt_preventivo.png)
 
-- [Diari di lavoro](Diario/)
+- [Diari di lavoro](https://github.com/ThaisaDeTorre/Gestione-Apiario/blob/master/Diario/)

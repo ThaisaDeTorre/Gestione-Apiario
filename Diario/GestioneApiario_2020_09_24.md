@@ -9,9 +9,9 @@
 
 |Orario        |Lavoro svolto                 |
 |--------------|------------------------------|
-|10:05 - 11:35 |    |
-|12:30 - 14:00 |  |
-|14:00 - 15:45 |   |
+|10:05 - 11:35 | gantt preventivo finito, continuo schemi |
+|12:30 - 14:00 | schemi fatti, continuo documentazione |
+|14:00 - 15:45 | continuo documentazione: scopo, pianificazione, analisi dei mezzi,  |
 
 ##  Problemi riscontrati e soluzioni adottate
 
@@ -20,4 +20,4 @@
 
 
 ## Programma di massima per la prossima giornata di lavoro
-- terminare gantt e schemi
+- 

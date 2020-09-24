@@ -10,8 +10,8 @@
 |Orario        |Lavoro svolto                 |
 |--------------|------------------------------|
 |10:05 - 11:35 | gantt preventivo finito, continuo schemi |
-|12:30 - 14:00 | schemi fatti, continuo documentazione |
-|14:00 - 15:45 | continuo documentazione: scopo, pianificazione, analisi dei mezzi,  |
+|12:30 - 14:00 | continuato e finito schemi, continuo documentazione, |
+|14:00 - 15:45 | sistemato readme.md, continuo documentazione: scopo, pianificazione, iniziato analisi dei mezzi. Cercato e scaricato template per la home dell'apiario. |
 
 ##  Problemi riscontrati e soluzioni adottate
 
@@ -20,4 +20,6 @@
 
 
 ## Programma di massima per la prossima giornata di lavoro
-- 
+- installare wamp e iniziare a configurarlo
+- continuare domumentazione
+- se c'è tempo iniziare a sistemare la gui

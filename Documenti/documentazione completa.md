@@ -102,9 +102,7 @@
 
 ### Scopo
 
-  Lo scopo del progetto (scopi didattici/scopi operativi). Dovrebbe
-  descrivere il mandato, ma non vanno ricopiate le informazioni del
-  quaderno dei compiti (che va invece allegato).
+  Questo è un progetto didattico che serve a gestire degli apiari. E' fatto in modo da poter accedere da qualsiasi pc per poter gestire semplicemente le proprie api, ci sono funzionalità utili come un diario nel quale scrivere annotazioni per ogni arnia, un calendario in cui inserire gli eventi, ecc. 
 
 
 ## Analisi
@@ -150,8 +148,7 @@
 **Priorità**: indica l’importanza di un requisito nell’insieme del
 progetto, definita assieme al committente. Ad esempio poter disporre di
 report con colonne di colori diversi ha priorità minore rispetto al
-fatto di avere un database con gli elementi al suo interno. Solitamente
-si definiscono al massimo di 2-3 livelli di priorità.
+fatto di avere un database con gli elementi al suo interno.
 
 **Sotto requisiti**: elementi che compongono il requisito.
 
@@ -163,21 +160,18 @@ funzionalità del prodotto.
 
 ### Pianificazione
 
-Prima di stabilire una pianificazione bisogna avere almeno una vaga idea
-del modello di sviluppo che si intende adottare. In questa sezione
-bisognerà inserire il modello concettuale di sviluppo che si seguirà
-durante il progetto. Gli elementi di riferimento per una buona
-pianificazione derivano da una scomposizione top-down della problematica
-del progetto.
-
-La pianificazione può essere rappresentata mediante un diagramma di
-Gantt.
-
-Se si usano altri metodi di pianificazione (es scrum), dovranno apparire
-in questo capitolo.
+Gantt preventivo:
+![Gantt](https://github.com/ThaisaDeTorre/Gestione-Apiario/Documenti/gantt_preventivo.png)
 
 ### Analisi dei mezzi
 
+versioni e nomi di tutti i sw che uso:
+  - vbox
+  - iso usata per vm
+  - gantt project: 2.8.11 r2396
+  - wamp usato (apache, mysql e php): 7.4.10 windows x64
+
+{
 Elencare e *descrivere* i mezzi disponibili per la realizzazione del
 progetto. Ricordarsi di sempre descrivere nel dettaglio le versioni e il
 modello di riferimento.
@@ -188,6 +182,7 @@ eventuali dipendenze.
 Su quale piattaforma dovrà essere eseguito il prodotto? Che hardware
 particolare è coinvolto nel progetto? Che particolarità e limitazioni
 presenta? Che hw sarà disponibile durante lo sviluppo?
+}
 
 ## Progettazione
 

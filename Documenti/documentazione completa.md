@@ -111,49 +111,17 @@
 
 ### Analisi del dominio
 
-  Questo capitolo dovrebbe descrivere il contesto in cui il prodotto verrà
-  utilizzato, da questa analisi dovrebbero scaturire le risposte a quesiti
-  quali ad esempio:
-
-  -   Background/Situazione iniziale
-
-  -   Quale è e come è organizzato il contesto in cui il prodotto dovrà
-      funzionare?
-
-  -   Come viene risolto attualmente il problema? Esiste già un prodotto
-      simile?
-
-  -   Chi sono gli utenti? Che bisogni hanno? Come e dove lavorano?
-
-  -   Che competenze/conoscenze/cultura posseggono gli utenti in relazione
-      con il problema?
-
-  -   Esistono convenzioni/standard applicati nel dominio?
-
-  -   Che conoscenze teoriche bisogna avere/acquisire per poter operare
-      efficacemente nel dominio?
-
   Per un apicoltore è importante tenere organizzate le informazioni sulle proprie arnie, e finché ce ne sono giusto un paio la loro gestione è abbastanza semplice. Se però questo apicoltore decidesse di aquistare piu arnie la loro gestione potrebbe complicarsi, ed è qui che potrebbe servire questo sw di gestione per le api.
   L'apicoltore potrà gestire facilmente le arnie tramite una pagina web. Si possono trovare molti software simili con cui risolvere il problema.  
 
+
 ### Analisi e specifica dei requisiti
-
-  il progettista deve cercare di rispondere alle seguenti domande:
-
-  Il committente deve poter gestire un numero indeterminato di arnie, deve poter salvare annotazioni in un diario digitale per ogni arnia (ad esempio segnare quando sono stati fatti i trattamenti sanitari ecc.) e avere un calendario sincronizzato con il diario e la meteo che allo scadere degli aventi invia una notifica.
   
   La gestione dell'apiario avverrà tramite web, l'utente dovrà loggarsi con il suo utente e per poter gestire le sue arnie utilizzeré una pagina HTML come interfaccia grafica. Il tutto sarà quindi gestito tramite un web server (WAMP, dati salvati su un db o un file, pagina gestione api html con php).
 
 
-  -   Come verrà utilizzato il prodotto?
 
-  -   Che prestazioni minime deve fornire il prodotto?
-
-
-
-
-
-  |**ID**	|**Nome**	|**Descrizione**|**Priorità**|
+  |**ID** |**Nome** |**Descrizione**|**Priorità**|
   |----|------------|--------|----|
   |Req-1|Web Server funzionante|Avere un web server|1|
   |Req-2|Interfaccia grafica|Pagina HTML|1|

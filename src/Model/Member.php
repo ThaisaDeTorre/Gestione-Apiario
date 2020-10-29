@@ -149,11 +149,90 @@ class Member
             session_start();
             $_SESSION["username"] = $memberRecord[0]["username"];
             session_write_close();
-            $url = "./home.php";
+            //$url = "./home.php";
+            $url = "./select-beehive.php";
             header("Location: $url");
         } else if ($loginPassword == 0) {
             $loginStatus = "Invalid username or password.";
             return $loginStatus;
         }
+    }
+    
+    
+
+    /**
+     * per aggiungere un'arnia
+     *
+     * @return string[] registration status message
+     */
+    public function registerBeehive()
+    {
+        // controlli luogo?
+        $query = 'INSERT INTO arnia (nome, anno_nascita_regina) VALUES (?, ?)';
+        $paramType = 'ss';
+        $paramValue = array(
+            $_POST["beehive-name"],
+            $_POST["queenBee-info"]
+        );
+        
+        $memberId = $this->ds->insert($query, $paramType, $paramValue);
+        
+        if (! empty($memberId)) {
+            $response = array(
+                "status" => "success",
+                "message" => "Arnia creata."
+            );
+        } else {
+            $response = array(
+                "status" => "error",
+                "message" => "Errore creazione arnia."
+            );
+        }
+        
+        return $response;
+    }
+
+    public function getBeehive ($username)
+    {
+        $query = 'SELECT utente_id FROM utente where username = ?';
+        $paramType = 's';
+        $paramValue = array(
+            $username
+        );
+        $userId = $this->ds->select($query, $paramType, $paramValue);
+        
+        $query = 'SELECT nome FROM utente where utente_id = ?';
+        $paramValue = array(
+            $userId
+        );
+        $memberRecord = $this->ds->select($query, $paramType, $paramValue);
+        
+        return $memberRecord;
+    }   
+    
+    /**
+     * to check if the beehive already exists
+     *
+     * @param string $beehive
+     * @return boolean
+     */
+    public function isArniaExists($arnia)
+    {
+        $query = 'SELECT * FROM arnia where nome = ?';
+        $paramType = 's';
+        $paramValue = array(
+            $username
+        );
+        $resultArray = $this->ds->select($query, $paramType, $paramValue);
+        $count = 0;
+        if (is_array($resultArray)) {
+            $count = count($resultArray);
+        }
+        if ($count > 0) {
+            $result = true;
+        } else {
+            $result = false;
+        }
+        return $result;
     }
 }

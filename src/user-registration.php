@@ -6,16 +6,16 @@ if (! empty($_POST["signup-btn"])) {
     $registrationResponse = $member->registerMember();
 }
 ?>
-<HTML>
-<HEAD>
+<html>
+<head>
 <TITLE>User Registration</TITLE>
 <link href="assets/css/phppot-style.css" type="text/css"
 	rel="stylesheet" />
 <link href="assets/css/user-registration.css" type="text/css"
 	rel="stylesheet" />
 <script src="vendor/jquery/jquery-3.3.1.js" type="text/javascript"></script>
-</HEAD>
-<BODY>
+</head>
+<body style="background: #343a40;">
 	<div class="phppot-container">
 		<div class="sign-up-container">
 			<div class="login-signup">
@@ -25,23 +25,28 @@ if (! empty($_POST["signup-btn"])) {
 				<form name="sign-up" action="" method="post"
 					onsubmit="return signupValidation()">
 					<div class="signup-heading">Registration</div>
-				<?php
-    if (! empty($registrationResponse["status"])) {
-        ?>
                     <?php
-        if ($registrationResponse["status"] == "error") {
-            ?>
-				    <div class="server-response error-msg"><?php echo $registrationResponse["message"]; ?></div>
+                        if (! empty($registrationResponse["status"])) {
+                    ?>
+                    
                     <?php
-        } else if ($registrationResponse["status"] == "success") {
-            ?>
-                    <div class="server-response success-msg"><?php echo $registrationResponse["message"]; ?></div>
+                        if ($registrationResponse["status"] == "error") {
+                    ?>
+                    
+                    <div class="server-response error-msg">
+                        <?php echo $registrationResponse["message"]; ?>
+                    </div>
+                    
                     <?php
-        }
-        ?>
-				<?php
-    }
-    ?>
+                        } else if ($registrationResponse["status"] == "success") {
+                    ?>
+                    
+                    <div class="server-response success-msg">
+                        <?php echo     $registrationResponse["message"]; ?>
+                    </div>
+                    <?php
+                        } }
+                    ?>
 				<div class="error-msg" id="error-msg"></div>
 					<div class="row">
 						<div class="inline-block">
@@ -146,5 +151,5 @@ function signupValidation() {
 	return valid;
 }
 </script>
-</BODY>
-</HTML>
+</body>
+</html>

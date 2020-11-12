@@ -1,8 +1,22 @@
 <?php
+
 session_start();
+use Phppot\Member;
+
 if (isset($_SESSION["username"])) {
     $username = $_SESSION["username"];
     session_write_close();
+    
+    require_once './Model/Member.php';
+    $member = new Member();
+    
+    $beehiveResult = $member->getBeehive($username);
+    //echo $member->getUserId($username);
+    if (! empty($_POST["confirm-btn"])) {
+        $registrationResponse = '';
+        $registrationResponse = $member->registerBeehive($username);
+    }
+    
 } else {
     // since the username is not set in session, the user is not-logged-in
     // he is trying to access this page unauthorized
@@ -20,20 +34,20 @@ if (isset($_SESSION["username"])) {
   	<title>Seleziona Apiario</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link href="assets/css/user-registration.css" type="text/css"
-	rel="stylesheet" />
-      <link href="assets/css/phppot-style.css" type="text/css"
-	rel="stylesheet" />
+      
+    <link href="assets/css/user-registration.css" type="text/css" rel="stylesheet" />
+    <link href="assets/css/phppot-style.css" type="text/css" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,800,900" rel="stylesheet">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="assets/css/style.css">
-      
+    
     <script src="assets/js/jquery.min.js"></script>
     <script src="assets/js/popper.js"></script>
     <script src="assets/js/bootstrap.min.js"></script>
     <script src="assets/js/main.js"></script>
+  </head>
       <script>
-        function signupValidation() {
+        function beehiveValidation() {
             var valid = true;
 
             $("#beehive-name").removeClass("error-field");
@@ -51,7 +65,7 @@ if (isset($_SESSION["username"])) {
                 valid = false;
             }
             
-            if(isNaN(queenBee) || queenBee = "") {
+            if(isNaN(queenBee) || queenBee == "") {
                 valid = false;
             }
             
@@ -62,7 +76,6 @@ if (isset($_SESSION["username"])) {
             return valid;
         }
     </script>
-  </head>
   <body>
 		
       <div class="wrapper d-flex align-items-stretch">
@@ -88,36 +101,49 @@ if (isset($_SESSION["username"])) {
                     </svg> Arnie
                   </a>
                   <ul class="collapse list-unstyled" id="pageSubmenu">
-                    <li>
-                        <a href="#">Arnia 1</a>
-                    </li>
-                    <li>
-                        <a href="#">Arnia 2</a>
-                    </li>
-                    <li>
-                        <a href="#">Arnia 3</a>
-                    </li>
+                      <?php
+                        foreach ($beehiveResult as $arnie) {
+                            foreach ($arnie as $nomeArnia) {
+                                echo "<li><a href='home.php'>$nomeArnia</a></li>";
+                            }
+                        }
+
+                    ?>
                   </ul>
                    </li>      
             </ul>   
 	        <div class="footer">
-	        	<p><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-						  Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="icon-heart" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib.com</a>
-						  <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+	        	<p><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0.-->
+                  Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="icon-heart" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib.com</a>
+                  <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
                 </p>
 	        </div>
 
 	      </div>
     	</nav>
-
+          
         <!-- Page Content  -->
         <div id="content" class="p-4 p-md-5">
+        <h2>Benvenuto <?php echo $username?>!</h2>
+
+        <div class="phppot-container">
+            <h3>Seleziona l'arnia su cui vuoi lavorare</h3>
+        <?php
+            foreach ($beehiveResult as $arnie) {
+                foreach ($arnie as $nomeArnia) {
+                    echo "<div><span><a href='home.php'>$nomeArnia</a><button>Elimina arnia</button></span></div>";
+                }
+            }
+
+        ?>
+
+        </div>
+            
         <div class="phppot-container">
 		<div class="sign-up-container">
-            <h2>Benvenuto <?php echo $username?>!</h2>
             <!--<div class="title-chapter"> -->
 			 <form name="add-beehive" action="" method="post" 
-                  onsubmit="return signupValidation()">
+                  onsubmit="return beehiveValidation()">
                 <h3>Aggiungi Arnia</h3>
                 <?php
                     if (! empty($registrationResponse["status"])) {

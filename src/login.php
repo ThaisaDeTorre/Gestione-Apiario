@@ -9,12 +9,10 @@ if (! empty($_POST["login-btn"])) {
 ?>
 <html>
 <head>
-<TITLE>Login</TITLE>
-<link href="assets/css/phppot-style.css" type="text/css"
-	rel="stylesheet" />
-<link href="assets/css/user-registration.css" type="text/css"
-	rel="stylesheet" />
-<script src="vendor/jquery/jquery-3.3.1.js" type="text/javascript"></script>
+    <TITLE>Login</TITLE>
+    <link href="assets/css/phppot-style.css" type="text/css" rel="stylesheet" />
+    <link href="assets/css/user-registration.css" type="text/css" rel="stylesheet" />
+    <script src="assets/js/jquery.min.js"></script>
 </head>
 <body style="background: #343a40;">
 	<div class="phppot-container">

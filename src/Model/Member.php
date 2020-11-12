@@ -108,6 +108,10 @@ class Member
         return $response;
     }
 
+    /**
+     * Ritorna gli utenti registrati.
+     * @return string[] con gli utenti registrati
+     */
     public function getMember($username)
     {
         $query = 'SELECT * FROM utente where username = ?';
@@ -129,7 +133,7 @@ class Member
         $memberRecord = $this->getMember($_POST["username"]);
         $loginPassword = 0;
         if (! empty($memberRecord)) {
-            if (! empty($_POST["login-password"])) {
+            if (! empty($_POST["login-password"]) && ! is_null($_POST["login-password"])) {
                 $password = $_POST["login-password"];
             }
             $hashedPassword = $memberRecord[0]["password"];
@@ -158,50 +162,75 @@ class Member
         }
     }
     
-    
-
     /**
-     * per aggiungere un'arnia
-     *
-     * @return string[] registration status message
+     * Trova l'id dell'utente.
+     * @return l'id dell'utente
      */
-    public function registerBeehive()
+    public function getUserId($username)
     {
-        // controlli luogo?
-        $query = 'INSERT INTO arnia (nome, anno_nascita_regina) VALUES (?, ?)';
-        $paramType = 'ss';
-        $paramValue = array(
-            $_POST["beehive-name"],
-            $_POST["queenBee-info"]
-        );
-        
-        $memberId = $this->ds->insert($query, $paramType, $paramValue);
-        
-        if (! empty($memberId)) {
-            $response = array(
-                "status" => "success",
-                "message" => "Arnia creata."
-            );
-        } else {
-            $response = array(
-                "status" => "error",
-                "message" => "Errore creazione arnia."
-            );
-        }
-        
-        return $response;
-    }
-
-    public function getBeehive ($username)
-    {
-        $query = 'SELECT utente_id FROM utente where username = ?';
+        $query = 'SELECT id FROM utente where username = ?';
         $paramType = 's';
         $paramValue = array(
             $username
         );
         $userId = $this->ds->select($query, $paramType, $paramValue);
+        $id = $userId[0];
+        return $id['id'];
+    }
+
+    /**
+     * per registrare un'arnia
+     *
+     * @return string[] registration status message
+     */
+    public function registerBeehive($username)
+    {
+        // controlli luogo?
         
-        $query = 'SELECT nome FROM utente where utente_id = ?';
+        $isBeehiveExists = $this->isBeehiveExists($_POST["beehive-name"], $_POST["queenBee-info"]);
+        
+        if ($isBeehiveExists) {
+            $response = array(
+                "status" => "error",
+                "message" => "Arnia già esistente."
+            );
+        } else {
+            $userId = $this->getUserId($username);
+            $query = 'INSERT INTO arnia (nome, anno_nascita_regina, utente_id) VALUES (?, ?, ?)';
+            $paramType = 'sss';
+            $paramValue = array(
+                $_POST["beehive-name"],
+                $_POST["queenBee-info"],
+                $userId
+            );
+
+            $memberId = $this->ds->insert($query, $paramType, $paramValue);
+        
+            if (! empty($memberId)) {
+                $response = array(
+                    "status" => "success",
+                    "message" => "Arnia creata."
+                );
+            } else {
+                $response = array(
+                    "status" => "error",
+                    "message" => "Errore creazione arnia."
+                );
+            }
+        }
+        
+        return $response;
+    }
+
+    /**
+     * Ritorna le arnie di un determinato utente.
+     * @return string[] le arnie di un utente
+     */
+    public function getBeehive ($username)
+    {
+        $userId = $this->getUserId($username);
+        $query = 'SELECT nome FROM arnia where utente_id = ?';
+        $paramType = 's';
         $paramValue = array(
             $userId
         );
@@ -211,20 +240,21 @@ class Member
     }   
     
     /**
-     * to check if the beehive already exists
-     *
-     * @param string $beehive
-     * @return boolean
+     * controlla se l'arnia esiste controllando il nome e la data di nascita dell'ape regina.
+     * @return boolean true se esiste gia un'arnia con il nome e la data di nascita dell'ape regina uguale
      */
-    public function isArniaExists($arnia)
+    public function isBeehiveExists($nome, $regina)
     {
-        $query = 'SELECT * FROM arnia where nome = ?';
-        $paramType = 's';
+        $query = 'SELECT * FROM arnia where nome = ? AND anno_nascita_regina = ?';
+        $paramType = 'ss';
         $paramValue = array(
-            $username
+            $nome,
+            $regina
         );
+        
         $resultArray = $this->ds->select($query, $paramType, $paramValue);
         $count = 0;
+        
         if (is_array($resultArray)) {
             $count = count($resultArray);
         }

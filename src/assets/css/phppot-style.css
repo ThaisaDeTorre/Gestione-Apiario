@@ -7,7 +7,7 @@
 	width: 740px;
 	margin: 0 auto;
 	padding: 0px 20px 20px 20px;
-	background: #343a40;
+/*	background: #343a40;*/
 }
 
 .phppot-container table {
@@ -174,10 +174,4 @@ input[type=text].phppot-input, .phppot-container input,
 		padding: 0;
 	}
 }
-
-/** aggiunte **/
-body {
-
-}
-
 

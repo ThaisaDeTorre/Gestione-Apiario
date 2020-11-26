@@ -8299,5 +8299,9 @@ a[data-toggle="collapse"] {
 }
 
 .title-chapter {
-	border: 1px solid black; padding: 15px;
+	padding: 15px;
+}
+
+.select-beehive {
+    
 }

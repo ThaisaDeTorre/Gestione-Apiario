@@ -11,12 +11,31 @@ if (isset($_SESSION["username"])) {
     $member = new Member();
     
     $beehiveResult = $member->getBeehive($username);
-    //echo $member->getUserId($username);
+    // Registra una nuova arnia
     if (! empty($_POST["confirm-btn"])) {
-        $registrationResponse = '';
-        $registrationResponse = $member->registerBeehive($username);
+//        $registrationResponse = '';
+//        $registrationResponse = $member->registerBeehive($username);
+        
+    }
+    // Cancella l'arnia selezionata
+    if (! empty($_POST["delete-btn"])) {
+        $deleteResponse = '';
+        $deleteResponse = $member->deleteBeehive($username);
+    }
+    // Seleziona l'arnia e va alla home page
+    if (! empty($_POST["selected-beehive"])) {
+//        echo var_dump($_POST["selected-beehive"]);
+//        echo $_POST["selected-beehive"];
+        $member->selectBeehive($_POST["selected-beehive"]);
+        
     }
     
+//        print_r($_SESSION);
+//    var_dump($_SESSION);
+//    if(isset($_COOKIE['beehive-name']) && isset($_COOKIE['beehive-id'])) {
+//        echo($_COOKIE['beehive-name']) . "  ";
+//        echo($_COOKIE['beehive-id']);
+//    }
 } else {
     // since the username is not set in session, the user is not-logged-in
     // he is trying to access this page unauthorized
@@ -47,21 +66,30 @@ if (isset($_SESSION["username"])) {
     <script src="assets/js/main.js"></script>
   </head>
       <script>
+        function debug() {
+            var beehiveName = $("#beehiveName").val();
+            var queenBee = parseInt($("#queenBee").val());
+            var queen = $("#queenBee").val();
+            
+            document.getElementById("debug").innerHTML = "bee name: "+beehiveName;
+            document.getElementById("debug").innerHTML = "queen birth(parsed): "+queenBee;
+            document.getElementById("debug").innerHTML = "queen birth: "+queen;
+        }
+          
         function beehiveValidation() {
             var valid = true;
 
-            $("#beehive-name").removeClass("error-field");
+            $("#beehiveName").removeClass("error-field");
             $("#queenBee").removeClass("error-field");
 
-            var beehiveName = $("#beehive-name").val();
+            var beehiveName = $("#beehiveName").val();
             var queenBee = parseInt($("#queenBee").val());
 
-            $("#beehive-name-info").html("").hide();
-            $("#email-info").html("").hide();
+            $("#beehiveName-info").html("").hide();
 
             if (beehiveName.trim() == "") {
-                $("#beehive-name-info").html("required.").css("color", "#ee0000").show();
-                $("#beehive-name").addClass("error-field");
+                $("#beehiveName-info").html("required.").css("color", "#ee0000").show();
+                $("#beehiveName").addClass("error-field");
                 valid = false;
             }
             
@@ -94,6 +122,7 @@ if (isset($_SESSION["username"])) {
                       <path fill-rule="evenodd" d="M13 2.5V6l-2-2V2.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5z"/>
                     </svg> Home
                   </a>
+<!--
                    <li>
                   <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
                     <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-hexagon-half" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
@@ -102,15 +131,15 @@ if (isset($_SESSION["username"])) {
                   </a>
                   <ul class="collapse list-unstyled" id="pageSubmenu">
                       <?php
-                        foreach ($beehiveResult as $arnie) {
-                            foreach ($arnie as $nomeArnia) {
-                                echo "<li><a href='home.php'>$nomeArnia</a></li>";
-                            }
-                        }
-
+//                        foreach ($beehiveResult as $arnie) {
+//                            foreach ($arnie as $nomeArnia) {
+//                                echo "<li><a href='home.php'>$nomeArnia</a></li>";
+//                            }
+//                        }
                     ?>
                   </ul>
                    </li>      
+-->
             </ul>   
 	        <div class="footer">
 	        	<p><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0.-->
@@ -126,24 +155,50 @@ if (isset($_SESSION["username"])) {
         <div id="content" class="p-4 p-md-5">
         <h2>Benvenuto <?php echo $username?>!</h2>
 
-        <div class="phppot-container">
-            <h3>Seleziona l'arnia su cui vuoi lavorare</h3>
-        <?php
-            foreach ($beehiveResult as $arnie) {
-                foreach ($arnie as $nomeArnia) {
-                    echo "<div><span><a href='home.php'>$nomeArnia</a><button>Elimina arnia</button></span></div>";
-                }
-            }
+<!--        <div class="phppot-container">
+-->
+            <div class="title-chapter"> 
+            <form name="manage-beehive" action="" method="post" onsubmit="return true">  
+                <h3>Seleziona l'arnia su cui vuoi lavorare</h3>
+                <?php
+                    if (! empty($deleteResponse["status"])) {
+                ?>
 
-        ?>
+                <?php
+                    if ($deleteResponse["status"] == "error") {
+                ?>
 
+                <div class="server-response error-msg">
+                    <?php echo $deleteResponse["message"]; ?>
+                </div>
+
+                <?php
+                    } else if ($deleteResponse["status"] == "success") {
+                ?>
+
+                <div class="server-response success-msg">
+                    <?php echo $deleteResponse["message"]; ?>
+                </div>
+                <?php
+                    } }
+                ?>
+                <?php
+                    foreach ($beehiveResult as $arnie) {
+                        foreach ($arnie as $nomeArnia) {
+                            ?>
+                            <input id="selected-beehive" type="submit" value="<?php echo $nomeArnia;?>" name="selected-beehive">
+                            <?php
+                        }
+                    }
+
+                ?>
+            </form>
         </div>
             
         <div class="phppot-container">
 		<div class="sign-up-container">
             <!--<div class="title-chapter"> -->
-			 <form name="add-beehive" action="" method="post" 
-                  onsubmit="return beehiveValidation()">
+			 <form name="add-beehive" action="" method="post" onsubmit="return beehiveValidation()">
                 <h3>Aggiungi Arnia</h3>
                 <?php
                     if (! empty($registrationResponse["status"])) {
@@ -172,10 +227,10 @@ if (isset($_SESSION["username"])) {
                 <div class="row">
                     <div class="inline-block">
                         <div class="form-label">
-                            Nome Arnia <span class="required error" id="beehive-name-info"></span>
+                            Nome Arnia <span class="required error" id="beehiveName-info"></span>
                         </div>
-                        <input class="input-box-330" type="text" name="beehive-name"
-                            id="beehive-name">
+                        <input class="input-box-330" type="text" name="beehiveName"
+                            id="beehiveName" value="" >
                     </div>
                 </div>
                 <div class="row">
@@ -183,19 +238,38 @@ if (isset($_SESSION["username"])) {
                         <div class="form-label">
                             Anno nascita ape regina <span class="required error" id="queenBee-info"></span>
                         </div>
-                        <input class="input-box-330" type="number" name="queenBee-info" id="queenBee" min="0">
+                        <input class="input-box-330" type="number" name="queenBee" id="queenBee" min="0" value="">
                     </div>
                 </div>
                 <div class="row">
                     <input class="btn" type="submit" name="confirm-btn"
                         id="confirm-btn" value="Conferma">
                 </div>
+                 <div id="debug"></div>
             </form>
 		<!--</div>-->
+            
             </div>
             </div>
+            <div id="dati" class="title-chapter">
+			<h4>Dati</h4>
+            <table id="beehive-data">
+                <?php
+                $dataResult = $member->getData($username);
+                    echo var_dump($dataResult);
+//                    echo var_dump($_SESSION);
+                    
+//                    foreach ($dataResult as $row) {
+//                        foreach ($row as $record) {
+//                            echo "<span>$record</span>";
+//                        }
+//                        echo "<br>";
+//                    }
+
+                ?>
+            </table>
+		</div>
       </div>
     </div>
-    
   </body>
 </html>

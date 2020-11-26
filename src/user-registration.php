@@ -12,6 +12,17 @@ if (! empty($_POST["signup-btn"])) {
     <link href="assets/css/phppot-style.css" type="text/css" rel="stylesheet" />
     <link href="assets/css/user-registration.css" type="text/css" rel="stylesheet" />
     <script src="assets/js/jquery.min.js"></script>
+    <style>
+        .phppot-container {
+            -webkit-font-smoothing: antialiased;
+            font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
+            font-size: .9em;
+            color: #1e2a28;
+            width: 740px;
+            margin: 0 auto;
+            padding: 0px 20px 20px 20px;
+        }
+    </style>
 </head>
 <body style="background: #343a40;">
 	<div class="phppot-container">

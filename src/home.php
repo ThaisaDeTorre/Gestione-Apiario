@@ -1,8 +1,27 @@
 <?php
 session_start();
+use Phppot\Member;
+
+//print_r($_SESSION);
+//    var_dump($_SESSION);
+//    
+//if(isset($_COOKIE['beehive-name']) && isset($_COOKIE['beehive-id'])) {
+//        echo($_COOKIE['beehive-name']) . "  ";
+//        echo($_COOKIE['beehive-id']);
+//    }
+
+
 if (isset($_SESSION["username"])) {
     $username = $_SESSION["username"];
+    $beehiveName = '';
+//    $currentBeehive = $_SESSION["current-beehive"];
+    $beehiveName = $_COOKIE['beehive-name'];
     session_write_close();
+    
+    require_once './Model/Member.php';
+    $member = new Member();
+    $dataResult = '';
+    $dataResult = $member->getData($username);
 } else {
     // since the username is not set in session, the user is not-logged-in
     // he is trying to access this page unauthorized
@@ -137,6 +156,13 @@ if (isset($_SESSION["username"])) {
                   </a>
                 </li>
                 <li class="nav-item">
+                    <a class="nav-link" href="select-beehive.php">
+                    <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-hexagon-half" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                      <path fill-rule="evenodd" d="M14 4.577L8 1v14l6-3.577V4.577zM8.5.134a1 1 0 0 0-1 0l-6 3.577a1 1 0 0 0-.5.866v6.846a1 1 0 0 0 .5.866l6 3.577a1 1 0 0 0 1 0l6-3.577a1 1 0 0 0 .5-.866V4.577a1 1 0 0 0-.5-.866L8.5.134z"/>
+                    </svg> Arnie
+                  </a>
+                </li>
+                <li class="nav-item">
                     <a class="nav-link" href="#calendario">
                       <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-calendar3" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                         <path fill-rule="evenodd" d="M14 0H2a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zM1 3.857C1 3.384 1.448 3 2 3h12c.552 0 1 .384 1 .857v10.286c0 .473-.448.857-1 .857H2c-.552 0-1-.384-1-.857V3.857z"/>
@@ -176,13 +202,9 @@ if (isset($_SESSION["username"])) {
           </div>
         </nav>
         
-        <h2 id="home" class="mb-4">Home Arnia #</h2>
-        <div class="title-chapter">
-			<h4>Scadenze calendario imminenti</h4>
-			
-		</div>
+        <h2 id="home" class="mb-4">Home Arnia <?php echo $beehiveName; ?></h2>
 		
-        <div id="meteo" class="title-chapter">
+        <div id="meteo" class="title-chapter" style="display: none;">
 			<h4>Meteo</h4>
 			<!-- Open Weather Map code --> 
 			<?php
@@ -229,10 +251,34 @@ if (isset($_SESSION["username"])) {
 		
         <div id="diario" class="title-chapter">
 			<h4>Diario</h4>
+            
+            <form name="add-beehive" action="" method="post" onsubmit="return true">
+                <textarea id="diario" name="diario" rows="4" cols="50">
+                  Diario sjdfsjudfjsdfjijdfsidsfijifsdifjs
+                </textarea>
+                <br><br>
+                <div class="row">
+                  <input class="btn" type="submit" name="diary-btn" id="diary-btn" value="Salva Modifiche">
+                </div>
+            </form>
 		</div>
           
         <div id="dati" class="title-chapter">
 			<h4>Dati</h4>
+            <table id="beehive-data">
+                <?php
+//                    echo var_dump($dataResult);
+//                    echo var_dump($_SESSION);
+                    
+//                    foreach ($dataResult as $row) {
+//                        foreach ($row as $record) {
+//                            echo "<span>$record</span>";
+//                        }
+//                        echo "<br>";
+//                    }
+
+                ?>
+            </table>
 		</div>
      
       </div>

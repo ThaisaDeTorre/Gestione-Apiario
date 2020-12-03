@@ -24,31 +24,31 @@ if (! empty($_POST["login-btn"])) {
 				<form name="login" action="" method="post"
 					onsubmit="return loginValidation()">
 					<div class="signup-heading">Login</div>
-				<?php if(!empty($loginResult)){?>
-				<div class="error-msg"><?php echo $loginResult;?></div>
-				<?php }?>
-				<div class="row">
-                    <div class="inline-block">
-                    <div class="form-label">
-                        Username<span class="required error" id="username-info"></span>
-                    </div>
-                        <input class="input-box-330" type="text" name="username"
-                            id="username">
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="inline-block">
+                    <?php if(!empty($loginResult)){?>
+                    <div class="error-msg"><?php echo $loginResult;?></div>
+                    <?php }?>
+                    <div class="row">
+                        <div class="inline-block">
                         <div class="form-label">
-                            Password<span class="required error" id="login-password-info"></span>
+                            Username<span class="required error" id="username-info"></span>
                         </div>
-                        <input class="input-box-330" type="password"
-                            name="login-password" id="login-password">
+                            <input class="input-box-330" type="text" name="username"
+                                id="username">
+                        </div>
                     </div>
-                </div>
-                <div class="row">
-                    <input class="btn" type="submit" name="login-btn"
-                        id="login-btn" value="Login">
-                </div>
+                    <div class="row">
+                        <div class="inline-block">
+                            <div class="form-label">
+                                Password<span class="required error" id="login-password-info"></span>
+                            </div>
+                            <input class="input-box-330" type="password"
+                                name="login-password" id="login-password">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <input class="btn" type="submit" name="login-btn"
+                            id="login-btn" value="Login">
+                    </div>
 				</form>
 			</div>
 		</div>

@@ -187,7 +187,6 @@ class Member
         // controlli luogo?
         
         $isBeehiveExists = $this->isBeehiveExists($_POST["beehiveName"]);
-        echo $_POST["queenBee"];
         if ($isBeehiveExists) {
             $response = array(
                 "status" => "error",
@@ -195,7 +194,7 @@ class Member
             );
         } else {
             $userId = $this->getUserId($username);
-            $query = 'INSERT INTO beehive (name, queen_bee_birth, user_id) VALUES (?, ?, ?)';
+            $query = 'INSERT INTO beehive (name, queen_bee_birth, diary, user_id) VALUES (?, ?, "", ?)';
             $paramType = 'sss';
             $paramValue = array(
                 $_POST["beehiveName"],
@@ -219,7 +218,7 @@ class Member
         }
         // Refresh della pagina cosi vedo nella lista la nuova arnia creata.
         $url = "./select-beehive.php";
-//        header("Location: $url");
+        header("Location: $url");
         return $response;
     }
 
@@ -266,24 +265,37 @@ class Member
         return $result;
     }
     
+    public function getBeehiveId($name)
+    {
+        $query = 'SELECT id FROM beehive WHERE name = ?';
+        $paramType = 's';
+        $paramValue = array(
+            $name
+        );
+        $beeId = $this->ds->select($query, $paramType, $paramValue);
+        $id = $beeId[0];
+        return $id['id'];
+    }
+    
     /**
      * Elimina l'arnia selezionata dell'utente.
      * @return string[] registration status message
      */
     public function deleteBeehive($name)
     {
-        //array con tutte le arnie
-//        $beehives = $this->getBeehive($username);
-
-//        $userId = $this->getUserId($username);
-        $query = 'DELETE FROM beehive WHERE name = ?';
+        $beeId = $this->getBeehiveId($name);
+        
+        $query = 'DELETE FROM treatment WHERE beehive_id = ?';
         $paramType = 's';
         $paramValue = array(
-            $name
+            $beeId
         );
-        $memberId = $this->ds->delete($query, $paramType, $paramValue);
+        $treatId = $this->ds->insert($query, $paramType, $paramValue);
         
-        if (! empty($memberId)) {
+        $query = 'DELETE FROM beehive WHERE id = ?';
+        $memberId = $this->ds->insert($query, $paramType, $paramValue);
+        
+        if (! empty($memberId) && ! empty($treatId)) {
                 $response = array(
                     "status" => "success",
                     "message" => "Arnia eliminata."
@@ -294,20 +306,85 @@ class Member
                     "message" => "Errore eliminazione arnia."
                 );
             }
+
+        $url = "./select-beehive.php";
+        header("Location: $url");
         return $response;
-    }    
+    }   
+    
+    /**
+     * Ritorna la stringa contenente il diario.
+     * @return string il diario
+     */
+    public function getDiary($id)
+    {
+        $query = 'SELECT diary FROM beehive WHERE id = ?';
+        $paramType = 's';
+        $paramValue = array(
+            $id
+        );
+        $diary = $this->ds->select($query, $paramType, $paramValue);
+        $txt = $diary[0];
+        if (! empty($diary)) {
+            return trim($txt['diary']);
+            
+        } else {
+            return " ";
+        }
+    }   
+    
+    public function setDiary($id)
+    {
+        $txt = $_POST['diary'];
+        $query = "update beehive set diary = '".$txt."' where id = ?";
+        $paramType = 's';
+        $paramValue = array(
+            $id
+        );
+        $diaryResponse = $this->ds->insert($query, $paramType, $paramValue);
+ 
+        if (isset($diaryResponse)) {
+            $response = array(
+                "status" => "success",
+                "message" => "Salvataggio riuscito."
+            );
+        } else {
+            $response = array(
+                "status" => "error",
+                "message" => "Errore salvataggio non riuscito."
+            );
+        }
+        // Refresh della pagina cosi vedo nella lista la nuova arnia creata.
+        $url = "./home.php";
+        header("Location: $url"); // ???? senza funziona
+        return $response;
+    }
     
     /**
      * Ritorna i dati sulle arnie dell'utente.
      * @return string[] i dati sulle arnie dell'utente
      */
-    public function getData($username)
+    public function getTreatmentData($beehiveId)
     {
-        $userId = $this->getUserId($username);
-        $query = 'SELECT * FROM beehive where user_id = ?';
+//        $query = 'SELECT date AS "Data trattamento", duration AS "Giorni trattamento" FROM beehive, treatment where beehive_id = ?';
+        $query = 'SELECT date, duration FROM treatment WHERE beehive_id = ? ORDER BY date';
+
         $paramType = 's';
         $paramValue = array(
-            $userId
+            $beehiveId
+        );
+        $memberRecord = $this->ds->select($query, $paramType, $paramValue);
+        
+        return $memberRecord;
+    }
+    
+    public function getBeeData($beehiveId)
+    {
+        $query = 'SELECT name AS "Nome", queen_bee_birth AS "Anno nascita ape regina" FROM beehive where beehive.id = ?';
+
+        $paramType = 's';
+        $paramValue = array(
+            $beehiveId
         );
         $memberRecord = $this->ds->select($query, $paramType, $paramValue);
         
@@ -328,7 +405,7 @@ class Member
         
         // gestire ev. errori
         $beehive = $result[0];
-        
+
         setcookie('beehive-name', $beehive['name']);
         setcookie('beehive-id', $beehive['id']);
 //        print_r($_SESSION);
@@ -336,6 +413,36 @@ class Member
         header("Location: $url");
     }
     
+    public function registerTreatment()
+    {
+        
+        $query = 'INSERT INTO treatment (date, duration, beehive_id) VALUES (?, ?, ?)';
+        $paramType = 'sss';
+        $paramValue = array(
+            $_POST["treatmentDate"],
+            $_POST["treatmentDuration"],
+            $_COOKIE['beehive-id']
+        );
+        var_dump($paramValue);
+        $memberId = $this->ds->insert($query, $paramType, $paramValue);
+//        $memberId = 1;
+        if (! empty($memberId)) {
+            $response = array(
+                "status" => "success",
+                "message" => "Trattamento registrato."
+            );
+        } else {
+            $response = array(
+                "status" => "error",
+                "message" => "Errore registratione trattamento."
+            );
+        }
+        
+        // Refresh della pagina.
+        $url = "./home.php";
+        header("Location: $url");
+        return $response;
+    }
     
     
 }

@@ -13,29 +13,27 @@ if (isset($_SESSION["username"])) {
     $beehiveResult = $member->getBeehive($username);
     // Registra una nuova arnia
     if (! empty($_POST["confirm-btn"])) {
-//        $registrationResponse = '';
-//        $registrationResponse = $member->registerBeehive($username);
+        $registrationResponse = '';
+        $registrationResponse = $member->registerBeehive($username);
         
     }
     // Cancella l'arnia selezionata
-    if (! empty($_POST["delete-btn"])) {
+    if (! empty($_POST["delete-beehive"]) && ! empty($_POST["beehive"])) {
         $deleteResponse = '';
-        $deleteResponse = $member->deleteBeehive($username);
+        echo "<br>bee: ".$_POST["beehive"];
+        echo "<br>action: ".$_POST["delete-beehive"];
+        
+        $deleteResponse = $member->deleteBeehive($_POST["beehive"]);
     }
     // Seleziona l'arnia e va alla home page
-    if (! empty($_POST["selected-beehive"])) {
-//        echo var_dump($_POST["selected-beehive"]);
-//        echo $_POST["selected-beehive"];
-        $member->selectBeehive($_POST["selected-beehive"]);
+    if (! empty($_POST["selected-beehive"]) && ! empty($_POST["beehive"])) {
+        echo "<br>bee: ".$_POST["beehive"];
+        echo "<br>action: ".$_POST["selected-beehive"];
+        
+        $member->selectBeehive($_POST["beehive"]);
         
     }
-    
-//        print_r($_SESSION);
-//    var_dump($_SESSION);
-//    if(isset($_COOKIE['beehive-name']) && isset($_COOKIE['beehive-id'])) {
-//        echo($_COOKIE['beehive-name']) . "  ";
-//        echo($_COOKIE['beehive-id']);
-//    }
+//    var_dump($_COOKIE);
 } else {
     // since the username is not set in session, the user is not-logged-in
     // he is trying to access this page unauthorized
@@ -66,16 +64,6 @@ if (isset($_SESSION["username"])) {
     <script src="assets/js/main.js"></script>
   </head>
       <script>
-        function debug() {
-            var beehiveName = $("#beehiveName").val();
-            var queenBee = parseInt($("#queenBee").val());
-            var queen = $("#queenBee").val();
-            
-            document.getElementById("debug").innerHTML = "bee name: "+beehiveName;
-            document.getElementById("debug").innerHTML = "queen birth(parsed): "+queenBee;
-            document.getElementById("debug").innerHTML = "queen birth: "+queen;
-        }
-          
         function beehiveValidation() {
             var valid = true;
 
@@ -111,6 +99,7 @@ if (isset($_SESSION["username"])) {
             <div class="p-4 pt-5">
                 <a href="#" class="img logo rounded-circle mb-5" style="background-image: url(images/logo.jpg);"></a>
                 <h5 style="text-align: center;color: #f8b739;">
+                    Welcome <?php echo $username?>!<br>
                     <a href="logout.php">Logout</a>
                 </h5>
                 
@@ -122,6 +111,9 @@ if (isset($_SESSION["username"])) {
                       <path fill-rule="evenodd" d="M13 2.5V6l-2-2V2.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5z"/>
                     </svg> Home
                   </a>
+                   <li>
+                       <a href="#add-beehive">Aggiungi Arnia</a>
+                   </li>
 <!--
                    <li>
                   <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
@@ -155,11 +147,9 @@ if (isset($_SESSION["username"])) {
         <div id="content" class="p-4 p-md-5">
         <h2>Benvenuto <?php echo $username?>!</h2>
 
-<!--        <div class="phppot-container">
--->
-            <div class="title-chapter"> 
+        <div class="title-chapter"> 
             <form name="manage-beehive" action="" method="post" onsubmit="return true">  
-                <h3>Seleziona l'arnia su cui vuoi lavorare</h3>
+                <h3>Seleziona l'arnia</h3>
                 <?php
                     if (! empty($deleteResponse["status"])) {
                 ?>
@@ -183,92 +173,82 @@ if (isset($_SESSION["username"])) {
                     } }
                 ?>
                 <?php
-                    foreach ($beehiveResult as $arnie) {
-                        foreach ($arnie as $nomeArnia) {
+                    if(! empty($beehiveResult)) {
+                        foreach ($beehiveResult as $arnie) {
+                            foreach ($arnie as $nomeArnia) {
                             ?>
-                            <input id="selected-beehive" type="submit" value="<?php echo $nomeArnia;?>" name="selected-beehive">
-                            <?php
-                        }
-                    }
+                            <input id="<?php echo $nomeArnia;?>" type="radio" value="<?php echo $nomeArnia;?>" name="beehive"> 
+                            
+                            <label for="<?php echo $nomeArnia;?>"><?php echo $nomeArnia;?></label><br>
 
+                            <?php
+                            }
+                        }
+                        ?>
+                        <input id="delete-beehive" type="submit" value="Elimina" name="delete-beehive"><br>
+
+                        <input id="selected-beehive" type="submit" value="Seleziona" name="selected-beehive">
+                        <?php
+                    }
                 ?>
             </form>
         </div>
             
-        <div class="phppot-container">
-		<div class="sign-up-container">
-            <!--<div class="title-chapter"> -->
-			 <form name="add-beehive" action="" method="post" onsubmit="return beehiveValidation()">
-                <h3>Aggiungi Arnia</h3>
-                <?php
-                    if (! empty($registrationResponse["status"])) {
-                ?>
+        <div id="add-beehive" class="phppot-container">
+            <div class="sign-up-container">
+                <div class="title-chapter"> 
+                 <form name="add-beehive" action="" method="post" onsubmit="return beehiveValidation()">
+                    <h3>Aggiungi Arnia</h3>
+                    <?php
+                        if (! empty($registrationResponse["status"])) {
+                    ?>
 
-                <?php
-                    if ($registrationResponse["status"] == "error") {
-                ?>
+                    <?php
+                        if ($registrationResponse["status"] == "error") {
+                    ?>
 
-                <div class="server-response error-msg">
-                    <?php echo $registrationResponse["message"]; ?>
-                </div>
-
-                <?php
-                    } else if ($registrationResponse["status"] == "success") {
-                ?>
-
-                <div class="server-response success-msg">
-                    <?php echo $registrationResponse["message"]; ?>
-                </div>
-                <?php
-                    } }
-                ?>
-                
-				<div class="error-msg" id="error-msg"></div>
-                <div class="row">
-                    <div class="inline-block">
-                        <div class="form-label">
-                            Nome Arnia <span class="required error" id="beehiveName-info"></span>
-                        </div>
-                        <input class="input-box-330" type="text" name="beehiveName"
-                            id="beehiveName" value="" >
+                    <div class="server-response error-msg">
+                        <?php echo $registrationResponse["message"]; ?>
                     </div>
-                </div>
-                <div class="row">
-                    <div class="inline-block">
-                        <div class="form-label">
-                            Anno nascita ape regina <span class="required error" id="queenBee-info"></span>
-                        </div>
-                        <input class="input-box-330" type="number" name="queenBee" id="queenBee" min="0" value="">
+
+                    <?php
+                        } else if ($registrationResponse["status"] == "success") {
+                    ?>
+
+                    <div class="server-response success-msg">
+                        <?php echo $registrationResponse["message"]; ?>
                     </div>
-                </div>
-                <div class="row">
-                    <input class="btn" type="submit" name="confirm-btn"
-                        id="confirm-btn" value="Conferma">
-                </div>
-                 <div id="debug"></div>
-            </form>
-		<!--</div>-->
+                    <?php
+                        } }
+                    ?>
+
+                    <div class="error-msg" id="error-msg"></div>
+                    <div class="row">
+                        <div class="inline-block">
+                            <div class="form-label">
+                                Nome Arnia <span class="required error" id="beehiveName-info"></span>
+                            </div>
+                            <input class="input-box-330" type="text" name="beehiveName"
+                                id="beehiveName" value="" >
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="inline-block">
+                            <div class="form-label">
+                                Anno nascita ape regina <span class="required error" id="queenBee-info"></span>
+                            </div>
+                            <input class="input-box-330" type="number" name="queenBee" id="queenBee" min="0" value="">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <input class="btn" type="submit" name="confirm-btn"
+                            id="confirm-btn" value="Conferma">
+                    </div>
+                </form>
+            </div>
             
             </div>
-            </div>
-            <div id="dati" class="title-chapter">
-			<h4>Dati</h4>
-            <table id="beehive-data">
-                <?php
-                $dataResult = $member->getData($username);
-                    echo var_dump($dataResult);
-//                    echo var_dump($_SESSION);
-                    
-//                    foreach ($dataResult as $row) {
-//                        foreach ($row as $record) {
-//                            echo "<span>$record</span>";
-//                        }
-//                        echo "<br>";
-//                    }
-
-                ?>
-            </table>
-		</div>
+        </div>
       </div>
     </div>
   </body>

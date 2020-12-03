@@ -120,16 +120,16 @@
 
   |**ID** |**Nome** |**Descrizione**|**Priorità**|
   |----|------------|--------|----|
-  |Req-1|Web Server funzionante|Avere un web server|1|
-  |Req-2|Interfaccia grafica|Pagina HTML|1|
-  |Req-3|Diario|Ogni arnia avrà a disposizione un diario nel quale si possono inserire e salvare eventuali annotazioni|1|
-  |Req-4|Calendario|Tutte le attività registrate dovranno essere visibili sul calendario con indicata la durata dell'attività|1|
-  |Req-5|Notifiche|Alla scadenza di ogni attività verrà inviata una notifica (tramite pop-up oppure email)|1|
-  |Req-6|Inserimento numero arnie |L’apicoltore dovrà poter inserire il numero desiderato di arnie|1|
-  |Req-7|Ape regina|Ogni arnia avrà salvata la data dell'anno di nascita dell'ape regina|1|
-  |Req-8|Maschera di login|Dovrà esserci una maschera dove l'utente si logga|1|
-  |Req-9|Trattamenti sanitari|Per ogni arnia sarà possibile indicare quando sono stati fatti i trattamenti sanitari e per quanti giorni|1|
-  |Req-10|Meteo|Nel diario/calendario verranno registrate le info meteo della zona, sfruttando qualche servizio meteo geografico|2|
+  |1|Web Server funzionante|Avere un web server|1|
+  |2|Interfaccia grafica|Pagina HTML|1|
+  |3|Diario|Ogni arnia avrà a disposizione un diario nel quale si possono inserire e salvare eventuali annotazioni|1|
+  |4|Calendario|Tutte le attività registrate dovranno essere visibili sul calendario con indicata la durata dell'attività|1|
+  |5|Notifiche|Alla scadenza di ogni attività verrà inviata una notifica (tramite pop-up oppure email)|1|
+  |6|Inserimento numero arnie |L’apicoltore dovrà poter inserire il numero desiderato di arnie|1|
+  |7|Ape regina|Ogni arnia avrà salvata la data dell'anno di nascita dell'ape regina|1|
+  |8|Maschera di login|Dovrà esserci una maschera dove l'utente si logga|1|
+  |9|Trattamenti sanitari|Per ogni arnia sarà possibile indicare quando sono stati fatti i trattamenti sanitari e per quanti giorni|1|
+  |10|Meteo|Nel diario/calendario verranno registrate le info meteo della zona, sfruttando qualche servizio meteo geografico|2|
 
   
   
@@ -154,8 +154,7 @@ fatto di avere un database con gli elementi al suo interno.
 
 ### Use case
 
-I casi d’uso rappresentano l’interazione tra i vari attori e le
-funzionalità del prodotto.
+![use case](https://github.com/ThaisaDeTorre/Gestione-Apiario/blob/master/Documenti/use_case.png)
 
 ### Pianificazione
 
@@ -168,6 +167,8 @@ versioni e nomi di tutti i sw che uso:
   - iso usata per vm
   - gantt project: 2.8.11 r2396
   - wamp usato (apache, mysql e php): 7.4.10 windows x64
+  - brackets
+  - hosting infomaniak (con phpmyadmin per gestire il db)
 
 {
 Elencare e *descrivere* i mezzi disponibili per la realizzazione del

@@ -10,7 +10,7 @@
 |Orario        |Lavoro svolto                 |
 |--------------|------------------------------|
 |10:05 - 11:35 | gantt preventivo finito, continuo schemi |
-|12:30 - 14:00 | continuato e finito schemi, continuo documentazione, |
+|12:30 - 14:00 | finito schemi, continuo documentazione |
 |14:00 - 15:45 | sistemato readme.md, continuo documentazione: scopo, pianificazione, iniziato analisi dei mezzi. Cercato e scaricato template per la home dell'apiario. |
 
 ##  Problemi riscontrati e soluzioni adottate

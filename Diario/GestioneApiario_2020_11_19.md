@@ -2,7 +2,7 @@
 
 # [GESTIONE APIARIO] | Diario di lavoro
 ##### [Thaisa De Torre]
-### [Lugano], [11.12.2020]
+### [Lugano], [11.19.2020]
 
 ## Lavori svolti
 

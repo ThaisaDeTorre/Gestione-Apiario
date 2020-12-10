@@ -85,20 +85,14 @@
       più veloce, più sicuro, più economico o in qualche altro aspetto
       migliore di altri prodotti/soluzioni?
 
-  Esempio di abstract:
-
-  > *As the size and complexity of today’s most modern computer chips
-  > increase, new techniques must be developed to effectively design and
-  > create Very Large Scale Integration chips quickly. For this project, a
-  > new type of hardware compiler is created. This hardware compiler will
-  > read a C++ program, and physically design a suitable microprocessor
-  > intended for running that specific program. With this new and powerful
-  > compiler, it is possible to design anything from a small adder, to a
-  > microprocessor with millions of transistors. Designing new computer
-  > chips, such as the Pentium 4, can require dozens of engineers and
-  > months of time. With the help of this compiler, a single person could
-  > design such a large-scale microprocessor in just weeks.*
-
+ *DESCRIZIONE PROGETTO: 
+Creare un applicativo per la gestione di un apiario. L’apicoltore dovrà poter inserire il numero desiderato di arnie. Ad ogni arnia sarà possibile registrare delle annotazioni in stile diario.
+Per ogni arnia sarà possibile indicare quando sono stati fatti i trattamenti sanitari e per quanti giorni. 
+Dovranno poter essere indicate la durata di determinate attività e alla scadenza dovrà essere segnalato tramite notifica l’evento.
+Tutte le attività registrate e future devono poter essere visibili in stile calendario.
+Ogni arnia avrà un’ape regina della quale si deve sempre conoscere l’anno di nascita.
+Nel diario/calendario dovranno essere registrate le informazioni meteo della zona, sfruttando qualche servizio meteo geografico.* 
+ 
 ### Scopo
 
   Questo è un progetto didattico che serve a gestire degli apiari. E' fatto in modo da poter accedere da qualsiasi pc per poter gestire semplicemente le proprie api, ci sono funzionalità utili come un diario nel quale scrivere annotazioni per ogni arnia, un calendario in cui inserire gli eventi, ecc. 

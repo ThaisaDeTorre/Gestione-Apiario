@@ -1,4 +1,0 @@
-member
-style
-select-beehive
-home

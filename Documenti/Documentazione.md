@@ -70,29 +70,25 @@
 
   Può contenere alcuni o tutti gli elementi seguenti:
 
-  -   **Background/Situazione iniziale**
+  -   **Background/Situazione iniziale** -> apicoltore deve tenere traccia di dati sulle proprie arnie
 
   -   **Descrizione del problema e motivazione**: Che problema ho cercato
       di risolvere? Questa sezione dovrebbe includere l'importanza del
       vostro lavoro, la difficoltà dell'area e l'effetto che potrebbe
-      avere se portato a termine con successo.
+      avere se portato a termine con successo. -> avendo tante arnie può risultare complicato tenere traccia dei dati manualmente
 
   -   **Approccio/Metodi**: Come ho ottenuto dei progressi? Come ho
       risolto il problema (tecniche…)? Quale è stata l’entità del mio
-      lavoro? Che fattori importanti controllo, ignoro o misuro?
+      lavoro? Che fattori importanti controllo, ignoro o misuro? -> con un app posso organizzarmi meglio
 
   -   **Risultati**: Quale è la risposta? Quali sono i risultati? Quanto è
       più veloce, più sicuro, più economico o in qualche altro aspetto
-      migliore di altri prodotti/soluzioni?
+      migliore di altri prodotti/soluzioni? -> una web app può essere la soluzione, accessibile a chiunque, da piu utenti. Può avere piu arnie ecc
 
- *DESCRIZIONE PROGETTO: 
-Creare un applicativo per la gestione di un apiario. L’apicoltore dovrà poter inserire il numero desiderato di arnie. Ad ogni arnia sarà possibile registrare delle annotazioni in stile diario.
-Per ogni arnia sarà possibile indicare quando sono stati fatti i trattamenti sanitari e per quanti giorni. 
-Dovranno poter essere indicate la durata di determinate attività e alla scadenza dovrà essere segnalato tramite notifica l’evento.
-Tutte le attività registrate e future devono poter essere visibili in stile calendario.
-Ogni arnia avrà un’ape regina della quale si deve sempre conoscere l’anno di nascita.
-Nel diario/calendario dovranno essere registrate le informazioni meteo della zona, sfruttando qualche servizio meteo geografico.* 
- 
+  Un apicoltore qualsiasi ha bisogno di gestire i propri apiari, tenere conto dei vari trattamenti e attività, eventuali appunti sulle singole arnie... Tenere tutte queste informazioni scritte a mano può essere difficile, soprattutto quando il numero di arnie da gestire diventa sostanzioso. Un applicativo web in grado di tenere informazioni utili sulle arnie in modo organizzato può essere utile, poter memorizzare la meteo della zona, degli appunti personali per ogni arnia, inserire eventi in un calendario ecc. 
+  
+  > english...
+  >
 ### Scopo
 
   Questo è un progetto didattico che serve a gestire degli apiari. E' fatto in modo da poter accedere da qualsiasi pc per poter gestire semplicemente le proprie api, ci sono funzionalità utili come un diario nel quale scrivere annotazioni per ogni arnia, un calendario in cui inserire gli eventi, ecc. 
@@ -102,13 +98,13 @@ Nel diario/calendario dovranno essere registrate le informazioni meteo della zon
 
 ### Analisi del dominio
 
-  Per un apicoltore è importante tenere organizzate le informazioni sulle proprie arnie, e finché ce ne sono giusto un paio la loro gestione è abbastanza semplice. Se però questo apicoltore decidesse di aquistare piu arnie la loro gestione potrebbe complicarsi, ed è qui che potrebbe servire questo sw di gestione per le api.
+  Per un apicoltore è importante tenere organizzate le informazioni sulle proprie arnie, e finché il numero di arnie è basso la loro gestione è abbastanza semplice. Se però questo apicoltore decidesse di aquistare piu arnie, gestirle potrebbe diventare complicato, ed è qui che potrebbe servire questa applicaizione di gestione per le api.
   L'apicoltore potrà gestire facilmente le arnie tramite una pagina web. Si possono trovare molti software simili con cui risolvere il problema.  
 
 
 ### Analisi e specifica dei requisiti
   
-  La gestione dell'apiario avverrà tramite web, l'utente dovrà loggarsi con il suo utente e per poter gestire le sue arnie utilizzeré una pagina HTML come interfaccia grafica. Il tutto sarà quindi gestito tramite un web server (WAMP, dati salvati su un db o un file, pagina gestione api html con php).
+  La gestione dell'apiario avverrà tramite web, l'utente dovrà loggarsi con il suo utente e per poter gestire le sue arnie utilizzerà una pagina web come interfaccia grafica. Il sito sarà sempre raggiungibile da qualsiasi dispositivo con una connessione internet.
 
 
 
@@ -143,8 +139,6 @@ progetto, definita assieme al committente. Ad esempio poter disporre di
 report con colonne di colori diversi ha priorità minore rispetto al
 fatto di avere un database con gli elementi al suo interno.
 
-**Sotto requisiti**: elementi che compongono il requisito.
-
 
 ### Use case
 
@@ -153,29 +147,22 @@ fatto di avere un database con gli elementi al suo interno.
 ### Pianificazione
 
 ![Gantt_preventivo](https://github.com/ThaisaDeTorre/Gestione-Apiario/blob/master/Documenti/gantt_preventivo.png)
+Secondo la pianificazione le prime lezioni saranno dedicate all'analisi e alla progettazione, si dovranno comprendere bene tutti i requisiti e la situazione per poi passare agli schemi e alla gestione del tempo. Praticamente tutto il resto del tempo sarà dedicato all'implementazione, cioé a tutta la realizzazione del codice. Le ultime lezioni invece serviranno a sistemare la documentazione e a svolgere gli ultimi test.
 
 ### Analisi dei mezzi
 
-versioni e nomi di tutti i sw che uso:
-  - vbox
+  - Oracle Virtual Box 6.0: 
   - iso usata per vm
-  - gantt project: 2.8.11 r2396
-  - wamp usato (apache, mysql e php): 7.4.10 windows x64
-  - brackets
-  - hosting infomaniak (con phpmyadmin per gestire il db)
+  - Gantt project: 2.8.11: per il diagramma di Gantt
+  - WAMP 7.4.10 windows x64: per la fase iniziale e per tutti i test
+  - brackets **<ver>**: per scrivere il codice 
+  - hosting infomaniak (con phpmyadmin per gestire il db): hosting fornito dalla scuola
+  librerie: 
+    -bootstrap, jQuery, plug-in calendario
+  
+  
+  La gestione dell'apiario sarà una web app, percui sarà accessibile da qualsiasi dispositivo con connessione ad internet.
 
-{
-Elencare e *descrivere* i mezzi disponibili per la realizzazione del
-progetto. Ricordarsi di sempre descrivere nel dettaglio le versioni e il
-modello di riferimento.
-
-SDK, librerie, tools utilizzati per la realizzazione del progetto e
-eventuali dipendenze.
-
-Su quale piattaforma dovrà essere eseguito il prodotto? Che hardware
-particolare è coinvolto nel progetto? Che particolarità e limitazioni
-presenta? Che hw sarà disponibile durante lo sviluppo?
-}
 
 ## Progettazione
 

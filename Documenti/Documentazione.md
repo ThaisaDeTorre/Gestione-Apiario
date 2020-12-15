@@ -192,8 +192,11 @@ agli attributi e le relazioni degli oggetti in uso.
 
 ### Schema E-R, schema logico e descrizione.
 
+![schema ER](https://github.com/ThaisaDeTorre/Gestione-Apiario/blob/master/Documenti/schema_ER_db.png)
 Se il diagramma E-R viene modificato, sulla doc dovrà apparire l’ultima
 versione, mentre le vecchie saranno sui diari.
+
+![schema logico](https://github.com/ThaisaDeTorre/Gestione-Apiario/blob/master/Documenti/schema_logico_db.png)
 
 ### Design delle interfacce
 
@@ -277,7 +280,7 @@ riportati gli errori e i problemi riscontrati e poi risolti durante il
 progetto.
 
 ## Consuntivo
-
+![gantt consuntivo](https://github.com/ThaisaDeTorre/Gestione-Apiario/blob/master/Documenti/gantt_consuntivo.png)
 Consuntivo del tempo di lavoro effettivo e considerazioni riguardo le
 differenze rispetto alla pianificazione (cap 1.7) (ad esempio Gannt
 consuntivo).
@@ -296,37 +299,7 @@ facilmente generalizzabili o sono specifici di un caso particolare? ecc
 ### Considerazioni personali
   Cosa ho imparato in questo progetto? ecc
 
-## Bibliografia
-
-### Bibliografia per articoli di riviste
-1.  Cognome e nome (o iniziali) dell’autore o degli autori, o nome
-    dell’organizzazione,
-
-2.  Titolo dell’articolo (tra virgolette),
-
-3.  Titolo della rivista (in italico),
-
-4.  Anno e numero
-
-5.  Pagina iniziale dell’articolo,
-
-### Bibliografia per libri
-
-
-1.  Cognome e nome (o iniziali) dell’autore o degli autori, o nome
-    dell’organizzazione,
-
-2.  Titolo del libro (in italico),
-
-3.  ev. Numero di edizione,
-
-4.  Nome dell’editore,
-
-5.  Anno di pubblicazione,
-
-6.  ISBN.
-
-### Sitografia
+## Sitografia
 
 1.  URL del sito (se troppo lungo solo dominio, evt completo nel
     diario),
@@ -357,6 +330,6 @@ Elenco degli allegati, esempio:
 
 -   Mandato e/o Qdc
 
--   Prodotto
+-   [Apiario](http://samtinfo.ch/i18dettha/Apiario/index.php)
 
 -   …

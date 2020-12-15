@@ -2,26 +2,40 @@
 session_start();
 use Phppot\Member;
 
-//print_r($_SESSION);
-//    var_dump($_SESSION);
-//    
-//if(isset($_COOKIE['beehive-name']) && isset($_COOKIE['beehive-id'])) {
-//        echo($_COOKIE['beehive-name']) . "  ";
-//        echo($_COOKIE['beehive-id']);
-//    }
-
-
 if (isset($_SESSION["username"])) {
     $username = $_SESSION["username"];
     $beehiveName = '';
 //    $currentBeehive = $_SESSION["current-beehive"];
     $beehiveName = $_COOKIE['beehive-name'];
+    $beehiveId = $_COOKIE['beehive-id'];
     session_write_close();
     
     require_once './Model/Member.php';
     $member = new Member();
-    $dataResult = '';
-    $dataResult = $member->getData($username);
+    $treatDataResult = '';
+    $beeDataResult = '';
+    
+    $treatDataResult = $member->getTreatmentData($beehiveId);
+    $beeDataResult = $member->getBeeData($beehiveId);
+
+    $diaryTxt = '';
+    $diaryTxt = $member->getDiary($beehiveId);
+    
+    // Salva il diario.
+    if (! empty($_POST["diary-btn"])) {
+        $diaryResponse = '';
+        $diaryResponse = $member->setDiary($beehiveId);
+        
+    }
+    
+    // Registra un nuovo trattamento
+    if (! empty($_POST["confirm-btn"])) {
+        $treatmentResponse = '';
+        $treatmentResponse = $member->registerTreatment();
+        echo 'add treat ok';
+    }
+        
+// var_dump($_COOKIE);
 } else {
     // since the username is not set in session, the user is not-logged-in
     // he is trying to access this page unauthorized
@@ -40,10 +54,17 @@ if (isset($_SESSION["username"])) {
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
+    <link href="assets/css/user-registration.css" type="text/css" rel="stylesheet">
+    <link href="assets/css/phppot-style.css" type="text/css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,800,900" rel="stylesheet">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="assets/css/style.css">
+      <!--   Calendario CSS   -->
+      <link rel="stylesheet" type="text/css" href="evo-calendar/css/evo-calendar.css"/>
+<!--      <link rel="stylesheet" type="text/css" href="evo-calendar/css/evo-calendar.midnight-blue.css"/>-->
+
   </head>
+    
   <body>
 		
       <div class="wrapper d-flex align-items-stretch">
@@ -56,33 +77,20 @@ if (isset($_SESSION["username"])) {
                 </h5>
                 
 	           <ul class="list-unstyled components mb-5">
-                   <li class="active">
+                 <li class="active">
 	               <a href="#home" >
                     <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-house-door-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                       <path d="M6.5 10.995V14.5a.5.5 0 0 1-.5.5H2a.5.5 0 0 1-.5-.5v-7a.5.5 0 0 1 .146-.354l6-6a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 .146.354v7a.5.5 0 0 1-.5.5h-4a.5.5 0 0 1-.5-.5V11c0-.25-.25-.5-.5-.5H7c-.25 0-.5.25-.5.495z"/>
                       <path fill-rule="evenodd" d="M13 2.5V6l-2-2V2.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5z"/>
                     </svg> Home
                   </a>
-                   <li>
+                 <li>
                   <a href="select-beehive.php"><!-- per dropdown: href="#pageSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle" -->
                     <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-hexagon-half" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                       <path fill-rule="evenodd" d="M14 4.577L8 1v14l6-3.577V4.577zM8.5.134a1 1 0 0 0-1 0l-6 3.577a1 1 0 0 0-.5.866v6.846a1 1 0 0 0 .5.866l6 3.577a1 1 0 0 0 1 0l6-3.577a1 1 0 0 0 .5-.866V4.577a1 1 0 0 0-.5-.866L8.5.134z"/>
                     </svg> Arnie
                   </a>
-           <!--
-                  <ul class="collapse list-unstyled" id="pageSubmenu">
-                    <li>
-                        <a href="#">Arnia 1</a>
-                    </li>
-                    <li>
-                        <a href="#">Arnia 2</a>
-                    </li>
-                    <li>
-                        <a href="#">Arnia 3</a>
-                    </li>
-                  </ul>
-            -->
-                  <li>
+                <li>
                   <a href="#meteo">
                     <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-thermometer-half" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                       <path fill-rule="evenodd" d="M6 2a2 2 0 1 1 4 0v7.627a3.5 3.5 0 1 1-4 0V2zm2-1a1 1 0 0 0-1 1v7.901a.5.5 0 0 1-.25.433A2.499 2.499 0 0 0 8 15a2.5 2.5 0 0 0 1.25-4.666.5.5 0 0 1-.25-.433V2a1 1 0 0 0-1-1z"/>
@@ -109,6 +117,14 @@ if (isset($_SESSION["username"])) {
                   <path fill-rule="evenodd" d="M5 10.5a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 0 1h-2a.5.5 0 0 1-.5-.5zm0-2a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5zm0-2a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5zm0-2a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5z"/>
                 </svg> Diario
               </a>
+	          </li>
+              <li>
+              <a href="#trattamenti">
+                    <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-calendar-check" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                    <path fill-rule="evenodd" d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4H1z"/>
+                    <path fill-rule="evenodd" d="M10.854 7.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L7.5 9.793l2.646-2.647a.5.5 0 0 1 .708 0z"/>
+                    </svg> Trattamenti
+                  </a>
 	          </li>
 	          <li>
               <a href="#dati">
@@ -163,6 +179,15 @@ if (isset($_SESSION["username"])) {
                   </a>
                 </li>
                 <li class="nav-item">
+                    <a class="nav-link" href="#meteo">
+                      <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-thermometer-half" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" d="M6 2a2 2 0 1 1 4 0v7.627a3.5 3.5 0 1 1-4 0V2zm2-1a1 1 0 0 0-1 1v7.901a.5.5 0 0 1-.25.433A2.499 2.499 0 0 0 8 15a2.5 2.5 0 0 0 1.25-4.666.5.5 0 0 1-.25-.433V2a1 1 0 0 0-1-1z"/>
+                        <path d="M8.25 2a.25.25 0 0 0-.5 0v9.02a1.514 1.514 0 0 1 .5 0V2z"/>
+                        <path d="M9.5 12.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z"/>
+                      </svg> Meteo
+                    </a>
+                </li>
+                <li class="nav-item">
                     <a class="nav-link" href="#calendario">
                       <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-calendar3" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                         <path fill-rule="evenodd" d="M14 0H2a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zM1 3.857C1 3.384 1.448 3 2 3h12c.552 0 1 .384 1 .857v10.286c0 .473-.448.857-1 .857H2c-.552 0-1-.384-1-.857V3.857z"/>
@@ -180,6 +205,14 @@ if (isset($_SESSION["username"])) {
                     </a>
                 </li>
                 <li class="nav-item">
+                    <a class="nav-link" href="#trattamenti">
+                    <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-calendar-check" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                    <path fill-rule="evenodd" d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4H1z"/>
+                    <path fill-rule="evenodd" d="M10.854 7.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L7.5 9.793l2.646-2.647a.5.5 0 0 1 .708 0z"/>
+                    </svg> Trattamenti
+                  </a>
+                </li>
+                <li class="nav-item">
                     <a class="nav-link" href="#dati">
                       <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-clipboard-data" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                         <path fill-rule="evenodd" d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1h1v-1z"/>
@@ -188,33 +221,24 @@ if (isset($_SESSION["username"])) {
                       </svg> Dati
                     </a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#meteo">
-                      <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-thermometer-half" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                        <path fill-rule="evenodd" d="M6 2a2 2 0 1 1 4 0v7.627a3.5 3.5 0 1 1-4 0V2zm2-1a1 1 0 0 0-1 1v7.901a.5.5 0 0 1-.25.433A2.499 2.499 0 0 0 8 15a2.5 2.5 0 0 0 1.25-4.666.5.5 0 0 1-.25-.433V2a1 1 0 0 0-1-1z"/>
-                        <path d="M8.25 2a.25.25 0 0 0-.5 0v9.02a1.514 1.514 0 0 1 .5 0V2z"/>
-                        <path d="M9.5 12.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z"/>
-                      </svg> Meteo
-                    </a>
-                </li>
               </ul>
             </div>
           </div>
         </nav>
         
         <h2 id="home" class="mb-4">Home Arnia <?php echo $beehiveName; ?></h2>
-		
-        <div id="meteo" class="title-chapter" style="display: none;">
+		<hr class="hr">
+        <div id="meteo" class="title-chapter">
 			<h4>Meteo</h4>
 			<!-- Open Weather Map code --> 
 			<?php
 				$apiKey = "3a11e70fe555d9bc574b4f427486dfea";
-				$cityId = "2657896";
+				$cityId = "2657896"; // Zurigo (preso manualmente dal URL)
 				$googleApiUrl = "http://api.openweathermap.org/data/2.5/weather?id=" . $cityId . "&lang=en&units=metric&APPID=" . $apiKey;
 
 				$ch = curl_init();
 
-				curl_setopt($ch, CURLOPT_headER, 0);
+//				curl_setopt($ch, CURLOPT_headER, 0);
 				curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 				curl_setopt($ch, CURLOPT_URL, $googleApiUrl);
 				curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
@@ -233,7 +257,6 @@ if (isset($_SESSION["username"])) {
 					<div><?php echo ucwords($data->weather[0]->description); ?></div>
 				</div>
 				<div class="weather-forecast">
-					
 						<span> <?php echo $data->main->temp_max; ?>°C (max)</span>
 						<span><?php echo $data->main->temp_min; ?>°C (min)</span>
 				</div>
@@ -243,18 +266,40 @@ if (isset($_SESSION["username"])) {
 				</div>
 			</div>
 		</div>
-        
+        <hr class="hr">
 		<div id="calendario" class="title-chapter">
 			<h4>Calendario</h4>
-			
+			<div id="calendar"></div>
 		</div>
-		
+		<hr class="hr">
         <div id="diario" class="title-chapter">
 			<h4>Diario</h4>
             
-            <form name="add-beehive" action="" method="post" onsubmit="return true">
-                <textarea id="diario" name="diario" rows="4" cols="50">
-                  Diario sjdfsjudfjsdfjijdfsidsfijifsdifjs
+            <form name="diary-form" action="" method="post" onsubmit="return true">
+                <?php
+                    if (! empty($diaryResponse["status"])) {
+                ?>
+
+                <?php
+                    if ($diaryResponse["status"] == "error") {
+                ?>
+
+                <div class="server-response error-msg">
+                    <?php echo $diaryResponse["message"]; ?>
+                </div>
+
+                <?php
+                    } else if ($diaryResponse["status"] == "success") {
+                ?>
+
+                <div class="server-response success-msg">
+                    <?php echo $diaryResponse["message"]; ?>
+                </div>
+                <?php
+                    } }
+                ?>
+                <textarea id="diary" name="diary" rows="4" cols="50">
+                  <?php echo $diaryTxt;?>
                 </textarea>
                 <br><br>
                 <div class="row">
@@ -262,31 +307,188 @@ if (isset($_SESSION["username"])) {
                 </div>
             </form>
 		</div>
-          
-        <div id="dati" class="title-chapter">
-			<h4>Dati</h4>
-            <table id="beehive-data">
+        <hr class="hr">
+        <div id="trattamenti" class="title-chapter">
+            <h4>Trattamenti</h4>
+            <table id="treatment-data" class="table">
+                <tr>
+                    <th>Data</th>
+                    <th>Durata [giorni]</th>
+                </tr>
                 <?php
-//                    echo var_dump($dataResult);
-//                    echo var_dump($_SESSION);
-                    
-//                    foreach ($dataResult as $row) {
-//                        foreach ($row as $record) {
-//                            echo "<span>$record</span>";
-//                        }
-//                        echo "<br>";
-//                    }
-
+                    if(! empty($treatDataResult)) {
+                        foreach ($treatDataResult as $col) {
+                            echo "<tr>";
+                            foreach ($col as $record) {
+                                echo "<td>$record</td>";
+                            }
+                            echo "</tr>";
+                        }
+                    }
                 ?>
             </table>
-		</div>
-     
-      </div>
-		</div>
+            <div id="add-treatment-form" class="phppot-container">
+            
+                <div class="sign-up-container">
+                    <div class="title-chapter"> 
+                        <form name="add-treatment" action="" method="post" onsubmit="return treatmentValidation()">
+                            <h5>Aggiungi Trattamento</h5>
+                            <?php
+                                if (! empty($treatmentResponse["status"])) {
+                            ?>
 
-    <script src="assets/js/jquery.min.js"></script>
-    <script src="assets/js/popper.js"></script>
-    <script src="assets/js/bootstrap.min.js"></script>
-    <script src="assets/js/main.js"></script>
+                            <?php
+                                if ($treatmentResponse["status"] == "error") {
+                            ?>
+
+                            <div class="server-response error-msg">
+                                <?php echo $treatmentResponse["message"]; ?>
+                            </div>
+
+                            <?php
+                                } else if ($treatmentResponse["status"] == "success") {
+                            ?>
+
+                            <div class="server-response success-msg">
+                                <?php echo $treatmentResponse["message"]; ?>
+                            </div>
+                            <?php
+                                } }
+                            ?>
+
+                            <div class="error-msg" id="error-msg"></div>
+                            <div class="row">
+                                <div class="inline-block">
+                                    <div class="form-label">
+                                        Data <span class="required error" id="treatmentDate-info"></span>
+                                    </div>
+                                    <input class="input-box-330" type="date" name="treatmentDate"
+                                        id="treatmentDate" value="" >
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="inline-block">
+                                    <div class="form-label">
+                                        Durata [giorni] <span class="required error" id="treatmentDuration-info"></span>
+                                    </div>
+                                    <input class="input-box-330" type="number" name="treatmentDuration" id="treatmentDuration" min="0" value="">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <input class="btn" type="submit" name="confirm-btn"
+                                    id="confirm-btn"  class="btn btn-primary" value="Conferma">
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <hr class="hr">
+            <div id="dati" class="title-chapter">
+                <h4>Dati</h4>
+                <h5>Arnia</h5>
+                <table id="beehive-data" class="table">
+                    <?php
+    //                    echo var_dump($dataResult);
+                        foreach (array_keys($beeDataResult[0]) as $name) {
+                            echo "<th>$name</th>";
+                        }
+                        foreach ($beeDataResult as $col) {
+                            echo "<tr>";
+                            foreach ($col as $record) {
+                                echo "<td>$record</td>";
+                            }
+                            echo "</tr>";
+                        }
+                    ?>
+                </table>
+            </div>
+        </div>
+      </div>
+    </div>
+      
+      <script src="assets/js/jquery.min.js"></script>
+      <script src="assets/js/popper.js"></script>
+      <script src="assets/js/bootstrap.min.js"></script>
+      <script src="assets/js/main.js"></script>
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"> </script>
+      <script src="evo-calendar/js/evo-calendar.js"></script>
+      <script>
+          function calendar() {
+            Events = [
+                {
+                id:"required-id-1",
+                name:"New Year",
+                date:"Wed Jan 01 2020 00:00:00 GMT-0800 (Pacific Standard Time)",
+                type:"holiday",
+                everyYear:true
+                }
+            ];
+
+            $('#calendar').evoCalendar({
+                calendarEvents: Events,
+    //            format:'dd/mm/yyyy',
+    //            titleFormat:'MM yyyy',
+    //            language: 'en',
+                todayHighlight: true,
+                sidebarDisplayDefault: false,
+                firstDayOfWeek: 1, //Monday
+    //            theme:'Midnight Blue'
+    //            theme:'Orange Coral'
+            });
+
+            // add events
+            $("#calendar").evoCalendar('addCalendarEvent', [{
+              id:'1',
+              name:"Prova",
+              date:"12-10-2020",
+              description:"hellooooo ",
+              type:"Event"
+            }]);
+               $("#calendar").evoCalendar('addCalendarEvent', [{
+              id:'2',
+              name:"natale",
+              badge:"23/12 - 27/12",
+              date: ["12/23/2020","12/27/2020"],
+              description:"natale ",
+              type:"Event"
+            }]);
+    //          $("#calendar").evoCalendar('addCalendarEvent', [{
+    //          id:'1',
+    //          name:"Prova 2",
+    //          date:"Dec 27, 2020",
+    //          type:"Event"
+    //        }]);
+          }
+        
+        function treatmentValidation() {
+            var valid = true;
+
+            $("#treatmentDate").removeClass("error-field");
+            $("#treatmentDuration").removeClass("error-field");
+
+            var treatmentDate = $("#treatmentDate").val();
+            var treatmentDuration = parseInt($("#treatmentDuration").val());
+            
+            $("#treatmentDate-info").html("").hide();
+
+            if(isNaN(treatmentDuration) || treatmentDuration == "") {
+                $("#treatmentDuration-info").html("required.").css("color", "#ee0000").show();
+                $("#treatmentDuration").addClass("error-field");
+                valid = false;
+            }
+            
+            if(treatmentDate == "") {
+                $("#treatmentDate-info").html("required.").css("color", "#ee0000").show();
+                $("#treatmentDate").addClass("error-field");
+                valid = false;
+            }
+
+            if (valid == false) {
+                $('.error-field').first().focus();
+                valid = false;
+            }
+            return valid;
+        }
+    </script>
   </body>
 </html>

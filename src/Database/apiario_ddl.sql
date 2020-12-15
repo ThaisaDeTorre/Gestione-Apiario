@@ -55,6 +55,7 @@ CREATE TABLE weather (
 	temperature_max DECIMAL(2,1),
 	humidity INT,
 	wind DECIMAL(2,1),
+	beehive_id INT NOT NULL,
 	PRIMARY KEY(date),
 	FOREIGN KEY (beehive_id) REFERENCES beehive(id)
 );
@@ -68,6 +69,7 @@ CREATE TABLE event (
 	date_end DATE,
 	type VARCHAR(255),
 	description VARCHAR(255),
+	beehive_id INT NOT NULL,
 	PRIMARY KEY(id),
 	FOREIGN KEY (beehive_id) REFERENCES beehive(id)
 );

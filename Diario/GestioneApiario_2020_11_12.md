@@ -24,5 +24,5 @@ Un po' indietro.
 - continuare domumentazione
 - continuare la gui
 
-- meteo (da sistemare i dettagli)
-- conferma registrazione utente
+- meteo (db)
+- conferma registrazione utente?

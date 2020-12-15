@@ -9,7 +9,7 @@
 
 |Orario        |Lavoro svolto                 |
 |--------------|------------------------------|
-|10:05 - 11:35 | creazione gui e tabella per le arnie per utente |
+|10:05 - 11:35 | creazione pagina per la selezione delle arnie per utente + la sua tabella db |
 |12:30 - 14:00 | aggiunta funzione di creazione arnia |
 |14:00 - 15:45 | stampare lista arnie e collegare pagina selezione-arnia con home utente |
 
@@ -23,5 +23,5 @@ Un po indietro per il problema del metodo.
 - continuare domumentazione
 - continuare la gui
 
-- meteo (da sistemare i dettagli)
-- conferma registrazione utente
+- meteo (db)
+- conferma registrazione utente?

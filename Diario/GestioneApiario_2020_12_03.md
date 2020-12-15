@@ -12,7 +12,7 @@
 |08:20 - 09:50 | continuo documentazione, finito cancellazione arnia |
 |10:05 - 11:35 | form eliminazione dati trattamento e aggiunta trattamento|
 |12:30 - 14:00 | terminata aggiunta trattamenti, gestito eliminazione arnia assieme ai suoi trattamenti |
-|14:00 - 15:45 | *1 ora da recuperare (info stage)*,  |
+|14:00 - 15:45 | continuo documentazione |
 
 ##  Problemi riscontrati e soluzioni adottate
 

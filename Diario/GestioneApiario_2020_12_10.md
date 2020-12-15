@@ -9,7 +9,7 @@
 
 |Orario        |Lavoro svolto                 |
 |--------------|------------------------------|
-|12:30 - 14:00 | calendario(ricerca, capito come funziona) |
+|12:30 - 14:00 | cercato e trovato calendario, integrato nel codice, iniziato aggiunta evento |
 |14:00 - 15:45 | continuo la documentazione |
 
 ##  Problemi riscontrati e soluzioni adottate

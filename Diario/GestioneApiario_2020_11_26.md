@@ -17,8 +17,6 @@
 ##  Problemi riscontrati e soluzioni adottate
 Non riuscivo a passare i dati dell'arnia (nome e id) da una pagina all'altra nonostante li salvassi nella sessione. Salvandoli nei cookie funziona.
 
-Ho notato che quando aggiungo un'arnia non prende il valore dell'anno di nascita dell'ape regina. Se dove registro l'arnia refresho la pagina (uso header) il valore della regina è 0, se invece non refresho prende il valore giusto.
-
 ##  Punto della situazione rispetto alla pianificazione
 Indietro con la documentazione. 
 
@@ -26,7 +24,7 @@ Indietro con la documentazione.
 ## Programma di massima per la prossima giornata di lavoro
 - continuare domumentazione
 - calendario
-- form di modifica dei dati
+- form di modifica dei dati?
 
 
 - meteo (da sistemare errore)

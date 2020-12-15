@@ -9,8 +9,8 @@
 
 |Orario        |Lavoro svolto                 |
 |--------------|------------------------------|
-|10:05 - 11:35 | terminato documentazione (analisi requisiti), creazione VM    |
-|12:30 - 14:00 | inizio gantt |
+|10:05 - 11:35 | terminato analisi requisiti, creazione VM    |
+|12:30 - 14:00 | mentre installa windows inizio gantt |
 |14:00 - 15:45 | inizio schemi + diario  |
 
 ##  Problemi riscontrati e soluzioni adottate

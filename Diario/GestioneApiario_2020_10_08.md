@@ -9,9 +9,9 @@
 
 |Orario        |Lavoro svolto                 |
 |--------------|------------------------------|
-|10:05 - 11:35 | Ricerca per inserire meteo e inserimento meteo |
-|12:30 - 14:00 | teoria |
-|14:00 - 15:45 | ricerca login page |
+|10:05 - 11:35 | Ricerca per inserire meteo, inserimento meteo nella home |
+|12:30 - 14:00 | teoria M306 |
+|14:00 - 15:45 | ricerca per capire come fare login page e registrazione |
 
 ##  Problemi riscontrati e soluzioni adottate
 

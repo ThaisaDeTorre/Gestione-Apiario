@@ -149,17 +149,9 @@ nell’implementazione del prodotto.
 
 ### Design dell’architettura del sistema
 
-Descrive:
+![design architettura](https://github.com/ThaisaDeTorre/Gestione-Apiario/blob/master/Documenti/design_architettura.PNG)
+Il sito web comunica con php richiedendo i dati da stampare, php comunica con il database di MySQL mandando i dati che prende dal sito e mandando i dati dal database al sito.
 
--   La struttura del programma/sistema lo schema di rete...
-
--   Gli oggetti/moduli/componenti che lo compongono.
-
--   I flussi di informazione in ingresso ed in uscita e le
-    relative elaborazioni. Può utilizzare *diagrammi di flusso dei
-    dati* (DFD).
-
--   Eventuale sitemap
 
 ### Schema E-R, schema logico e descrizione.
 
@@ -195,22 +187,98 @@ Una volta loggati si viene reindirizzati sulla pagina per la selezione dell'arni
 Dopo aver selezionato l'arnia si arriva nella pagina per la sua gestione, a sinistra c'è un navbar per navigare facilmente nella pagina. Nella home vi sarà visualizzata la meteo, il calendario, i trattamenti e i dati dell'arnia. 
 
 ### Design procedurale
+Per la logica del sito ho scritto metacodice. Per il login e la registrazione dell'utente avendoli scaricati online ho guardato e capito il codice per riadattato e commentarlo quindi non ho metacodice.
 
-Descrive i concetti dettagliati dell’architettura/sviluppo utilizzando
-ad esempio:
+#### Login
 
--   Diagrammi di flusso e Nassi.
+HTML + JS
+---------
+btn on click
+  loginValidation() 
+    |-> controllo i dati
+    return isValid
+ 
+ PHP
+ ----------
+ login()
+   controllo dati
+   if userExists && password corrisponde
+   session_start
+   reindirizzo su selezione arnia  
+ 
+#### Registrazione
 
--   Tabelle.
+HTML + JS
+---------
+btn on click
+  loginValidation() 
+    |-> controllo i dati
+    return isValid
+ 
+ PHP
+ ----------
+ login()
+   if !userExists
+    controllo dati
+    -> insert user in db
 
--   Classi e metodi.
+#### Selezione Arnia
+- mostrare arnie:
+  getUserId()
+    select * from arnia where user_id = ?
+    
+- selezione:
+  click arnia
+  click btn select
+    |-> getBeehiveId
+      set session var beeId
+      header(home.php)
 
--   Tabelle di routing
+- eliminazione:
+  click arnia
+  click btn delete
+    |-> getBeehiveId
+      delete arnia where id=?
+    refresh page
 
--   Diritti di accesso a condivisioni …
+- aggiunta:
+  click arnia
+  click btn add
+    beehiveValidation() -> controllo input
+      passo a php -> registerBeehive()
+        if !exixts
+        controllo dati
+        insert into beehive (valori)
+        refresh pagina per ricaricare dati  
+    
+    
+#### Home
+- Meteo
+  preso codice open weather per mostrare meteo
+  
+- Calendario
+  preso codice evo-calendar
+  - add event
+    eventValidation() -> controllo input
+      passo a php -> registerEvent()
+        controllo dati
+        insert into event (valori)
+        refresh pagina per ricaricare dati  
+        
+- Trattamenti
+  mostro
+  - add
+    treatmentValidation() -> controllo input
+      passo a php -> registerTreatment()
+        controllo se non ne esiste gia uno con la stessa data 
+        controllo dati
+        insert into event (valori)
+        refresh pagina per ricaricare dati
+    
 
-Questi documenti permetteranno di rappresentare i dettagli procedurali
-per la realizzazione del prodotto.
+- Dati
+  getUserId
+  select * from user where id = ?
 
 ## Implementazione
 
@@ -234,32 +302,7 @@ componenti utilizzati. Eventualmente questa va allegata.
 Per eventuali dettagli si possono inserire riferimenti ai diari.
 
 ## Test
-
-### Protocollo di test
-
-Definire in modo accurato tutti i test che devono essere realizzati per
-garantire l’adempimento delle richieste formulate nei requisiti. I test
-fungono da garanzia di qualità del prodotto. Ogni test deve essere
-ripetibile alle stesse condizioni.
-
-
-|Test Case      | TC-001                               |
-|---------------|--------------------------------------|
-|**Nome**       |Import a card, but not shown with the GUI |
-|**Riferimento**|REQ-012                               |
-|**Descrizione**|Import a card with KIC, KID and KIK keys with no obfuscation, but not shown with the GUI |
-|**Prerequisiti**|Store on local PC: Profile\_1.2.001.xml (appendix n\_n) and Cards\_1.2.001.txt (appendix n\_n) |
-|**Procedura**     | - Go to “Cards manager” menu, in main page click “Import Profiles” link, Select the “1.2.001.xml” file, Import the Profile - Go to “Cards manager” menu, in main page click “Import Cards” link, Select the “1.2.001.txt” file, Delete the cards, Select the “1.2.001.txt” file, Import the cards |
-|**Risultati attesi** |Keys visible in the DB (OtaCardKey) but not visible in the GUI (Card details) |
-
-
-### Risultati test
-
-Tabella riassuntiva in cui si inseriscono i test riusciti e non del
-prodotto finale. Se un test non riesce e viene corretto l’errore, questo
-dovrà risultare nel documento finale come riuscito (la procedura della
-correzione apparirà nel diario), altrimenti dovrà essere descritto
-l’errore con eventuali ipotesi di correzione.
+Dopo ogni aggiunta nel codice ne testavo il funzionamento, per esempio dopo aver finito di scrivere il form per l'aggiunta delle arnie e messo i controlli testavo se mi prendeva comunque i campi vuoti o inserivo testo nella data di nascita della regina. 
 
 ### Mancanze/limitazioni conosciute
 
@@ -288,15 +331,6 @@ facilmente generalizzabili o sono specifici di un caso particolare? ecc
   Cosa ho imparato in questo progetto? ecc
 
 ## Sitografia
-
-1.  URL del sito (se troppo lungo solo dominio, evt completo nel
-    diario),
-
-2.  Eventuale titolo della pagina (in italico),
-
-3.  Data di consultazione (GG-MM-AAAA).
-
-**Esempio:**
 
 -   https://colorlib.com/etc/bootstrap-sidebar/sidebar-01/, *Bootstrap template*, 24.09.2020.
 

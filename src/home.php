@@ -16,12 +16,15 @@ if (isset($_SESSION["username"])) {
     require_once './Model/Member.php';
     $member = new Member();
     $treatDataResult = '';
+    $eventDataResult = '';
     $beeDataResult = '';
   
     // get all the treatment of the beehive
     $treatDataResult = $member->getTreatmentData($beehiveId);
     // get data of the beehive
     $beeDataResult = $member->getBeeData($beehiveId);
+    // get data of the beehive
+    $eventDataResult = $member->getEventData($beehiveId);
 
     $diaryTxt = '';
     // get diary of the beehive
@@ -40,10 +43,10 @@ if (isset($_SESSION["username"])) {
     }
   
     // Registers a new event
-//    if (! empty($_POST["add-event-btn"])) {
-//        $calendarResponse = '';
-//        $calendarResponse = $member->registerEvent();
-//    }
+    if (! empty($_POST["add-event-btn"])) {
+        $calendarResponse = '';
+        $calendarResponse = $member->registerEvent();
+    }
         
 } else {
     // since the username is not set in session, the user is not-logged-in
@@ -277,6 +280,26 @@ if (isset($_SESSION["username"])) {
           <h4>Calendario</h4>
           <div id="calendar"></div>
           
+          <table id="calendar-data" class="table">
+              <tr>
+                  <th>Nome</th>
+                  <th>Inizio</th>
+                  <th>Fine</th>
+                  <th>Tipo</th>
+                  <th>Descrizione</th>
+              </tr>
+              <?php
+                  if(! empty($eventDataResult)) {
+                      foreach ($eventDataResult as $col) {
+                          echo "<tr>";
+                          foreach ($col as $record) {
+                              echo "<td>$record</td>";
+                          }
+                          echo "</tr>";
+                      }
+                  }
+              ?>
+          </table>
           <form name="event-form" action="" method="post" onsubmit="return eventValidation()">
               <?php
                   if (! empty($calendarResponse["status"])) {
@@ -502,8 +525,6 @@ if (isset($_SESSION["username"])) {
 
           $('#calendar').evoCalendar({
               calendarEvents: events,
-//              format:'dd/mm/yyyy',
-  //            titleFormat:'MM yyyy',
               todayHighlight: true,
               sidebarDisplayDefault: false,
               firstDayOfWeek: 1, // Monday
@@ -519,14 +540,6 @@ if (isset($_SESSION["username"])) {
        * @return true if the event is added successfully
        */
       function addEvent(name, date, type, desc) {
-        console.log("adding event...");
-        console.log("------------------------");
-        console.log("name: "+name);
-//        console.log("start: "+startDate);
-//        console.log("end: "+endDate);
-        console.log("date: "+date);
-        console.log("type: "+type);
-        console.log("desc: "+desc);
         
         var currEvent = {
           id: eventId,
@@ -537,33 +550,8 @@ if (isset($_SESSION["username"])) {
         };
         
         events.push(currEvent);
-//        $("#calendar").evoCalendar('addCalendarEvent', currEvent);
         eventId++;
         displayCalendar();
-//        location.reload();
-//        $("#calendar").evoCalendar('addCalendarEvent', [{
-//          id:'1',
-//          name:"Prova",
-//          date:"12-11-2020",
-//          description:"hellooooo ",
-//          type:"Event"
-//        }]);
-//        
-/*
-       $("#calendar").evoCalendar('addCalendarEvent', [{
-          id:'2',
-          name:"natale",
-          badge:"23/12 - 27/12",
-          date: ["12/23/2020","12/27/2020"],
-          description:"natale ",
-          type:"Event"
-        }]);
-          $("#calendar").evoCalendar('addCalendarEvent', [{
-          id:'1',
-          name:"Prova 2",
-          date:"Dec 27, 2020",
-          type:"Event"
-        }]);*/
       }
 
       /**
@@ -587,9 +575,6 @@ if (isset($_SESSION["username"])) {
         var desc = $("#eventDesc").val();
         
         var date;
-//        
-//        console.log("start type: "+typeof startDate);
-//        console.log("end type: "+typeof endDate);
 
         if (name.trim() == "") {
             $("#eventName-info").html("required.").css("color", "#ee0000").show();
@@ -625,6 +610,7 @@ if (isset($_SESSION["username"])) {
           
         } else if (ed.valueOf() > sd.valueOf()) {
           console.log("end > start");
+            // change the date format
             var d = sd.getDate();
             var m = sd.getMonth()+1;
             var y = sd.getFullYear();
@@ -645,6 +631,7 @@ if (isset($_SESSION["username"])) {
           console.log("date [1]: "+date[1]);
           
         } else if (ed.valueOf() < sd.valueOf()) {
+          // if end date is before start date throw an error
           $("#eventEnd-info").html("Data fine non può essere prima della data d'inizio.").css("color", "#ee0000").show();
           valid = false;
         }

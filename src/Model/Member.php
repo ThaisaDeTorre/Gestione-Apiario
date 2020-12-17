@@ -409,6 +409,23 @@ class Member
     }
     
     /**
+     * To get the event data of a beehive.
+     * @return string[] data of the beehive
+     */
+    public function getEventData($beehiveId)
+    {
+        $query = 'SELECT name, date_start, date_end, type, description FROM event WHERE beehive_id = ? ORDER BY date_start';
+
+        $paramType = 's';
+        $paramValue = array(
+            $beehiveId
+        );
+        $memberRecord = $this->ds->select($query, $paramType, $paramValue);
+        
+        return $memberRecord;
+    }
+    
+    /**
      * Select the beehive setting the coockie with the id and the name, redirecting
      * the user to the home management page of the beehive.
      */
@@ -469,7 +486,6 @@ class Member
      */
     public function registerEvent()
     {      
-//      echo "<br>register event";
         $query = 'INSERT INTO event (name, date_start, date_end, type, description, beehive_id) VALUES (?, ?, ?, ?, ?, ?)';
         $paramType = 'ssssss';
         $paramValue = array(
@@ -480,8 +496,7 @@ class Member
             $_POST["eventDesc"],
             $_COOKIE['beehive-id']
         );
-//        $memberId = $this->ds->insert($query, $paramType, $paramValue);
-      $memberId = "hi";
+        $memberId = $this->ds->insert($query, $paramType, $paramValue);
         if (! empty($memberId)) {
             $response = array(
                 "status" => "success",

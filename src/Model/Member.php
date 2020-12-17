@@ -428,9 +428,13 @@ class Member
         header("Location: $url");
     }
     
+    /**
+     * To register a new treatment.
+     *
+     * @return string[] registration status message
+     */
     public function registerTreatment()
     {
-        
         $query = 'INSERT INTO treatment (date, duration, beehive_id) VALUES (?, ?, ?)';
         $paramType = 'sss';
         $paramValue = array(
@@ -439,6 +443,7 @@ class Member
             $_COOKIE['beehive-id']
         );
         $memberId = $this->ds->insert($query, $paramType, $paramValue);
+      
         if (! empty($memberId)) {
             $response = array(
                 "status" => "success",

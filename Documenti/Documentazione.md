@@ -79,26 +79,24 @@
 
   Per un apicoltore è importante tenere organizzate le informazioni sulle proprie arnie, e finché il numero di arnie è basso la loro gestione è abbastanza semplice. Se però questo apicoltore decidesse di aquistare piu arnie, gestirle potrebbe diventare complicato, ed è qui che potrebbe servire questa applicaizione di gestione per le api.
   L'apicoltore potrà gestire facilmente le arnie tramite una pagina web. Si possono trovare molti software simili con cui risolvere il problema.  
-
+La gestione dell'apiario avverrà tramite web, l'utente dovrà loggarsi con il suo utente e per poter gestire le sue arnie utilizzerà una pagina web come interfaccia grafica. Il sito sarà sempre raggiungibile da qualsiasi dispositivo con una connessione internet.
 
 ### Analisi e specifica dei requisiti
   
-  La gestione dell'apiario avverrà tramite web, l'utente dovrà loggarsi con il suo utente e per poter gestire le sue arnie utilizzerà una pagina web come interfaccia grafica. Il sito sarà sempre raggiungibile da qualsiasi dispositivo con una connessione internet.
-
-
+  La tabella dei requisiti decisi dopo aver analizzato le specifiche con il professore:
 
   |**ID** |**Nome** |**Descrizione**|**Priorità**|
   |----|------------|--------|----|
-  |1|Web Server funzionante|Avere un web server|1|
+  |1|Web Server o servizio hosting |Avere un web server o un servizio di hosting con il quale gestire il sito web|1|
   |2|Interfaccia grafica|Pagina HTML|1|
   |3|Diario|Ogni arnia avrà a disposizione un diario nel quale si possono inserire e salvare eventuali annotazioni|1|
   |4|Calendario|Tutte le attività registrate dovranno essere visibili sul calendario con indicata la durata dell'attività|1|
-  |5|Notifiche|Alla scadenza di ogni attività verrà inviata una notifica (tramite pop-up oppure email)|1|
-  |6|Inserimento numero arnie |L’apicoltore dovrà poter inserire il numero desiderato di arnie|1|
+  |5|Notifiche|Alla scadenza di ogni attività verrà inviata una notifica|1|
+  |6|Numero arnie |L’apicoltore ha a disposizione un numero indeterminato di arnie|1|
   |7|Ape regina|Ogni arnia avrà salvata la data dell'anno di nascita dell'ape regina|1|
-  |8|Maschera di login|Dovrà esserci una maschera dove l'utente si logga|1|
+  |8|Login e registrazione|Dovrà esserci una maschera dove l'utente avrà la possibilità di loggarsi o di registrarsi|1|
   |9|Trattamenti sanitari|Per ogni arnia sarà possibile indicare quando sono stati fatti i trattamenti sanitari e per quanti giorni|1|
-  |10|Meteo|Nel diario/calendario verranno registrate le info meteo della zona, sfruttando qualche servizio meteo geografico|2|
+  |10|Meteo|Nel diario/calendario verranno registrate le info meteo della zona, sfruttando qualche servizio meteo geografico|1|
 
   
   
@@ -131,17 +129,18 @@ Secondo la pianificazione le prime lezioni saranno dedicate all'analisi e alla p
 
 ### Analisi dei mezzi
 
-  - Oracle Virtual Box 6.0: 
-  - iso usata per vm
-  - Gantt project: 2.8.11: per il diagramma di Gantt
-  - WAMP 7.4.10 windows x64: per la fase iniziale e per tutti i test
-  - brackets **<ver>**: per scrivere il codice 
-  - hosting infomaniak (con phpmyadmin per gestire il db): hosting fornito dalla scuola
+  - Oracle Virtual Box 6.0: per la virtual machine
+  - VM con windows 10 - 1903: per avere un web server sul quale lavorare e testare tutto in attesa del servizio hosting
+  - Gantt project 2.8.11: per il diagramma di Gantt
+  - WAMP 7.4.10 windows x64: per il web server
+  - brackets: per scrivere il codice 
+  - hosting infomaniak (con phpmyadmin per gestire il db): hosting fornito dalla scuola per il sito
   librerie: 
     -bootstrap, jQuery, plug-in calendario
+    - Open weather API: per prendere i dati meteo in tempo reale
+ 
   
-  
-  La gestione dell'apiario sarà una web app, percui sarà accessibile da qualsiasi dispositivo con connessione ad internet.
+  La gestione dell'apiario sarà una web app, percui sarà accessibile da qualsiasi dispositivo con connessione ad internet. Non è necessario avere un hardware potente.
 
 
 ## Progettazione
@@ -290,12 +289,15 @@ facilmente generalizzabili o sono specifici di un caso particolare? ecc
 
 **Esempio:**
 
--   http://standards.ieee.org/guides/style/section7.html, *IEEE
-    Standards Style Manual*, 07-06-2008.
+-   https://colorlib.com/etc/bootstrap-sidebar/sidebar-01/, *Bootstrap template*, 09.24.2020.
+
+-   https://www.jqueryscript.net/demo/event-calendar-evo/, *Evo-calendar*, 12.10.2020.
+
+-   https://phppot.com/php/user-registration-in-php-with-login-form-with-mysql-and-code-download/, *Form login e registrazione*, 10.08.2020.
+
+-   https://openweathermap.org/api/one-call-api?gclid=EAIaIQobChMIwt6n_Mqk7AIVkN4YCh3K4AHZEAAYASAAEgKQUfD_BwE, *Open weather API*, 10.08.2020.
 
 ## Allegati
-
-Elenco degli allegati, esempio:
 
 -   Diari di lavoro
 
@@ -304,12 +306,10 @@ Elenco degli allegati, esempio:
 -   Istruzioni di installazione del prodotto (con credenziali
     di accesso) e/o di eventuali prodotti terzi
 
--   Documentazione di prodotti di terzi
+-   [Documentazione evo-calendar](https://github.com/edlynvillegas/evo-calendar)
 
--   Eventuali guide utente / Manuali di utilizzo
+-   [Documentazione login e registrazione](https://phppot.com/php/user-registration-in-php-with-login-form-with-mysql-and-code-download/)
 
--   Mandato e/o Qdc
+-   [Mandato]()
 
 -   [Apiario](http://samtinfo.ch/i18dettha/Apiario/index.php)
-
--   …

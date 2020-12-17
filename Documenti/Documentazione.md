@@ -70,7 +70,7 @@
   
 ### Scopo
 
-  Questo è un progetto didattico che serve a gestire degli apiari. E' fatto in modo da poter accedere da qualsiasi pc per poter gestire semplicemente le proprie api, ci sono funzionalità utili come un diario nel quale scrivere annotazioni per ogni arnia, un calendario in cui inserire gli eventi, ecc. 
+  Questo è un progetto didattico che serve a gestire degli apiari. E' fatto in modo da poterci accedere tramite computer, tablet o smartphone per poter gestire in modo semplice i propri apiari, ci sono funzionalità utili come un diario nel quale scrivere annotazioni per ogni arnia, un calendario in cui inserire gli eventi con notifiche, una tabella in cui salvare i trattamenti fatti e viene mostrata sempre anche la meteo della zona in cui è l'arnia. 
 
 
 ## Analisi
@@ -122,6 +122,7 @@ fatto di avere un database con gli elementi al suo interno.
 ### Use case
 
 ![use case](https://github.com/ThaisaDeTorre/Gestione-Apiario/blob/master/Documenti/use_case.png)
+
 
 ### Pianificazione
 

@@ -38,6 +38,12 @@ if (isset($_SESSION["username"])) {
         $treatmentResponse = '';
         $treatmentResponse = $member->registerTreatment();
     }
+  
+    // Registers a new event
+    if (! empty($_POST["add-event-btn"])) {
+        $calendarResponse = '';
+        $treatmentResponse = $member->registerEvent();
+    }
         
 } else {
     // since the username is not set in session, the user is not-logged-in
@@ -223,6 +229,7 @@ if (isset($_SESSION["username"])) {
           </div>
         </nav>
         
+        <!--    Home    -->
         <h2 id="home" class="mb-4">Home Arnia <?php echo $beehiveName; ?></h2>
 		<hr class="hr">
         
@@ -269,6 +276,72 @@ if (isset($_SESSION["username"])) {
 		<div id="calendario" class="title-chapter">
           <h4>Calendario</h4>
           <div id="calendar"></div>
+          
+          <form name="event-form" action="" method="post" onsubmit="return eventValidation()">
+              <?php
+                  if (! empty($diaryResponse["status"])) {
+              ?>
+
+              <?php
+                  if ($calendarResponse["status"] == "error") {
+              ?>
+
+              <div class="server-response error-msg">
+                  <?php echo $calendarResponse["message"]; ?>
+              </div>
+
+              <?php
+                  } else if ($calendarResponse["status"] == "success") {
+              ?>
+
+              <div class="server-response success-msg">
+                  <?php echo $calendarResponse["message"]; ?>
+              </div>
+              <?php
+                  } }
+              ?>
+              <div class="row">
+                <div class="inline-block">
+                  <div class="form-label">
+                      Nome <span class="required error" id="eventName-info"></span>
+                  </div>
+                  <input class="input-box-330" type="text" name="eventName" id="eventName" value="" >
+                </div>
+              </div>
+              <div class="row">
+                <div class="inline-block">
+                  <div class="form-label">
+                      Data inizio <span class="required error" id="eventStart-info"></span>
+                  </div>
+                  <input class="input-box-330" type="number" name="eventStart" id="eventStart" min="0" value="">
+                </div>
+              </div>
+              <div class="row">
+                <div class="inline-block">
+                  <div class="form-label">
+                      Data fine <span class="required error" id="eventEnd-info"></span>
+                  </div>
+                  <input class="input-box-330" type="number" name="eventEnd" id="eventEnd" min="0" value="">
+                </div>
+              </div>
+              <div class="row">
+                <div class="inline-block">
+                  <div class="form-label">
+                      Tipo <span class="required error" id="eventType-info"></span>
+                  </div>
+                  <select name="eventType" id="eventType">
+                    <option value="event">Evento</option>
+                    <option value="holiday">Festività</option>
+                    <option value="birthday">Compleanno</option>
+                  </select>
+                </div>
+              </div>
+              <textarea id="eventDesc" name="eventDesc" rows="4" cols="50"></textarea>
+              <br><br>
+              <div class="row">
+                <input class="btn btn-primary" type="submit" name="add-event-btn" id="add-event-btn" value="Aggiungi">
+              </div>
+          </form>
 		</div>
 		<hr class="hr">
         
@@ -384,27 +457,27 @@ if (isset($_SESSION["username"])) {
               </div>
             </div>
           </div>
-          <hr class="hr">
+        </div>
+        <hr class="hr">
           
-          <!--    Beehive data      -->
-          <div id="dati" class="title-chapter">
-            <h4>Dati</h4>
-            <h5>Arnia</h5>
-            <table id="beehive-data" class="table">
-              <?php
-                  foreach (array_keys($beeDataResult[0]) as $name) {
-                      echo "<th>$name</th>";
-                  }
-                  foreach ($beeDataResult as $col) {
-                      echo "<tr>";
-                      foreach ($col as $record) {
-                          echo "<td>$record</td>";
-                      }
-                      echo "</tr>";
-                  }
-              ?>
-             </table>
-          </div>
+        <!--    Beehive data      -->
+        <div id="dati" class="title-chapter">
+          <h4>Dati</h4>
+          <h5>Arnia</h5>
+          <table id="beehive-data" class="table">
+            <?php
+                foreach (array_keys($beeDataResult[0]) as $name) {
+                    echo "<th>$name</th>";
+                }
+                foreach ($beeDataResult as $col) {
+                    echo "<tr>";
+                    foreach ($col as $record) {
+                        echo "<td>$record</td>";
+                    }
+                    echo "</tr>";
+                }
+            ?>
+           </table>
         </div>
       </div>
     </div>
@@ -415,56 +488,130 @@ if (isset($_SESSION["username"])) {
     <script src="assets/js/main.js"></script>
     <script src="evo-calendar/js/evo-calendar.js"></script>
     <script>
+        var eventId = 1;
+      
         /**
          * Display the calendar.
          */
         function calendar() {
-          Events = [
-              {
-              id:"required-id-1",
-              name:"New Year",
-              date:"Wed Jan 01 2020 00:00:00 GMT-0800 (Pacific Standard Time)",
-              type:"holiday",
-              everyYear:true
-              }
-          ];
-
           $('#calendar').evoCalendar({
               calendarEvents: Events,
-  //            format:'dd/mm/yyyy',
+              format:'dd/mm/yyyy',
   //            titleFormat:'MM yyyy',
-  //            language: 'en',
               todayHighlight: true,
               sidebarDisplayDefault: false,
-              firstDayOfWeek: 1, //Monday
-  //            theme:'Midnight Blue'
-  //            theme:'Orange Coral'
+              firstDayOfWeek: 1, // Monday
           });
-
-          // add events
-          $("#calendar").evoCalendar('addCalendarEvent', [{
-            id:'1',
-            name:"Prova",
-            date:"12-10-2020",
-            description:"hellooooo ",
-            type:"Event"
-          }]);
-             $("#calendar").evoCalendar('addCalendarEvent', [{
-            id:'2',
-            name:"natale",
-            badge:"23/12 - 27/12",
-            date: ["12/23/2020","12/27/2020"],
-            description:"natale ",
-            type:"Event"
-          }]);
-  //          $("#calendar").evoCalendar('addCalendarEvent', [{
-  //          id:'1',
-  //          name:"Prova 2",
-  //          date:"Dec 27, 2020",
-  //          type:"Event"
-  //        }]);
+        }
+      
+      /**
+       * Adds the event to the calendar.
+       * @param name name of the event
+       * @param startDate start date of the event
+       * @param endDate end date of the event
+       * @param type type of the event
+       * @param desc description of the event
+       * @return true if the event is added successfully
+       */
+      function addEvents(name, startDate, endDate, type, desc){
+        var date;
+        
+        if (startDate == endDate) {
+          date = startDate;
+        } else {
+          date = "["+startDate+","+endDate+"]";
         }
 
+        $("#calendar").evoCalendar('addCalendarEvent', [{
+          id:eventId,
+          name:name,
+          date:date,
+          description:desc,
+          type:type
+        }]);
+        
+        eventId++;
+        /*$("#calendar").evoCalendar('addCalendarEvent', [{
+          id:'1',
+          name:"Prova",
+          date:"12-10-2020",
+          description:"hellooooo ",
+          type:"Event"
+        }]);
+
+       $("#calendar").evoCalendar('addCalendarEvent', [{
+          id:'2',
+          name:"natale",
+          badge:"23/12 - 27/12",
+          date: ["12/23/2020","12/27/2020"],
+          description:"natale ",
+          type:"Event"
+        }]);
+          $("#calendar").evoCalendar('addCalendarEvent', [{
+          id:'1',
+          name:"Prova 2",
+          date:"Dec 27, 2020",
+          type:"Event"
+        }]);*/
+      }
+
+      /**
+       * Check che input values for the event.
+       * @return If all the values are ok it returns true.
+       */
+      function eventValidation() {
+        var inputs = [];
+        var valid = true;
+
+        $("#eventName").removeClass("error-field");
+        $("#eventStart").removeClass("error-field");
+        $("#eventEnd").removeClass("error-field");
+        $("#eventType").removeClass("error-field");
+        $("#eventDesc").removeClass("error-field");
+
+        var name = $("#eventName").val();
+        var startDate = $("#eventStart").val();
+        var endDate = $("#eventEnd").val();
+        var type = $("#eventType").val();
+        var desc = $("#eventDesc").val();
+
+        if (name.trim() == "") {
+            $("#eventName-info").html("required.").css("color", "#ee0000").show();
+            $("#eventName").addClass("error-field");
+            valid = false;
+        }
+        if (type.trim() == "") {
+            $("#eventType-info").html("required.").css("color", "#ee0000").show();
+            $("#eventType").addClass("error-field");
+            valid = false;
+        }
+        if (desc.trim() == "") {
+            $("#eventDesc-info").html("required.").css("color", "#ee0000").show();
+            $("#eventDesc").addClass("error-field");
+            valid = false;
+        }
+        if (endDate == "") {
+            $("#eventEnd-info").html("required.").css("color", "#ee0000").show();
+            $("#eventEnd").addClass("error-field");
+            valid = false;
+        }
+        if (startDateDate == "") {
+            $("#eventStart-info").html("required.").css("color", "#ee0000").show();
+            $("#eventStart").addClass("error-field");
+            valid = false;
+        }
+        
+        if (valid == false) {
+            $('.error-field').first().focus();
+            valid = false;
+        } else {
+          addEvent(name, startDate, endDate, type, desc); 
+          valid = true;
+        }
+
+        return valid;
+      }
+      
       /**
        * Check che input values for the treatment.
        * @return If all the values are ok it returns true.

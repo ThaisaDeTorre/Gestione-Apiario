@@ -26,8 +26,6 @@
 
 1. [Test](#test)
 
-  - [Mancanze/limitazioni conosciute](#mancanze/limitazioni-conosciute)
-
 1. [Consuntivo](#consuntivo)
 
 1. [Conclusioni](#conclusioni)

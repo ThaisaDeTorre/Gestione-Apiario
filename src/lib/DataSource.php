@@ -111,7 +111,7 @@ class DataSource
     }
 
     /**
-     * To insert
+     * To insert, upload and delete
      *
      * @param string $query
      * @param string $paramType

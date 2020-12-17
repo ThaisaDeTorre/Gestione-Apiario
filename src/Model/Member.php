@@ -462,5 +462,40 @@ class Member
         return $response;
     }
     
-    
+    /**
+     * To register a new event.
+     *
+     * @return string[] registration status message
+     */
+    public function registerEvent()
+    {      
+//      echo "<br>register event";
+        $query = 'INSERT INTO event (name, date_start, date_end, type, description, beehive_id) VALUES (?, ?, ?, ?, ?, ?)';
+        $paramType = 'ssssss';
+        $paramValue = array(
+            $_POST["eventName"],
+            $_POST["eventStart"],
+            $_POST["eventEnd"],
+            $_POST["eventType"],
+            $_POST["eventDesc"],
+            $_COOKIE['beehive-id']
+        );
+//        $memberId = $this->ds->insert($query, $paramType, $paramValue);
+      $memberId = "hi";
+        if (! empty($memberId)) {
+            $response = array(
+                "status" => "success",
+                "message" => "Evento aggiunto."
+            );
+        } else {
+            $response = array(
+                "status" => "error",
+                "message" => "Errore registrazione evento."
+            );
+        }
+        // Refresh the page to show the updated calendar.
+        $url = "./home.php";
+        header("Location: $url");
+        return $response;
+    }
 }

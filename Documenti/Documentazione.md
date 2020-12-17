@@ -22,8 +22,6 @@
 
   - [Design dell’architettura del sistema](#design-dell’architettura-del-sistema)
 
-  - [Design dei dati e database](#design-dei-dati-e-database)
-
 1. [Implementazione](#implementazione)
 
 1. [Test](#test)
@@ -129,15 +127,14 @@ Secondo la pianificazione le prime lezioni saranno dedicate all'analisi e alla p
 
 ### Analisi dei mezzi
 
-  - Oracle Virtual Box 6.0: per la virtual machine
-  - VM con windows 10 - 1903: per avere un web server sul quale lavorare e testare tutto in attesa del servizio hosting
-  - Gantt project 2.8.11: per il diagramma di Gantt
+  - Oracle Virtual Box 6.0: Software per la virtual machine
+  - VM con windows 10 - 1903: VM per avere un web server sul quale lavorare e testare tutto in attesa del servizio hosting
+  - Gantt project 2.8.11: Software per il diagramma di Gantt
   - WAMP 7.4.10 windows x64: per il web server
-  - brackets: per scrivere il codice 
-  - hosting infomaniak (con phpmyadmin per gestire il db): hosting fornito dalla scuola per il sito
-  librerie: 
-    -bootstrap, jQuery, plug-in calendario
-    - Open weather API: per prendere i dati meteo in tempo reale
+  - brackets: Editor per scrivere il codice 
+  - hosting infomaniak (con phpmyadmin per gestire il db): Servizio hosting fornito dalla scuola per il sito
+  - jQuery 3.5.1: libreria javascript
+  - Open weather API: API per prendere i dati meteo in tempo reale
  
   
   La gestione dell'apiario sarà una web app, percui sarà accessibile da qualsiasi dispositivo con connessione ad internet. Non è necessario avere un hardware potente.
@@ -164,18 +161,22 @@ Descrive:
 
 -   Eventuale sitemap
 
-### Design dei dati e database
-
-Descrizione delle strutture di dati utilizzate dal programma in base
-agli attributi e le relazioni degli oggetti in uso.
-
 ### Schema E-R, schema logico e descrizione.
 
 ![schema ER](https://github.com/ThaisaDeTorre/Gestione-Apiario/blob/master/Documenti/schema_ER_db.png)
-Se il diagramma E-R viene modificato, sulla doc dovrà apparire l’ultima
-versione, mentre le vecchie saranno sui diari.
+In questo schema E-R sono rappresentate tutte le entità necessarie al progetto: 
+
+- Ogni utente è identificato da un id, ha nome, una password e un'email.
+- Ogni arnia è identificata da un id, ha nome, un luogo, un diario e la data di nascita dell'ape regina.
+- Ogni trattamento è identificato da un id, ha una data d'inizio e una data di fine.
+- Ogni evento è identificato da un id, ha una data d'inizio, una data di fine, un nome, un tipo (evento, festività e compleanno) e una eventuale descrizione.
+- La meteo viene salvata ogni giorno ed è identificata dalla data del giorno, ha una descrizione che indica lo stato (ad esempio 'nuvoloso'), una temperatura minima e una massima. Dopo aver trovato l'API di open weather ho aggiunto anche i campi per il vento e l'umidità.
+
+Un utente gestisce da 0 a n arnie, un'arnia a sua volta può aver fatto da 0 a n trattamenti; può avere da 0 a n eventi ma ha sempre la meteo di almeno 1 giorno salvata, fino a n giorni.
+
 
 ![schema logico](https://github.com/ThaisaDeTorre/Gestione-Apiario/blob/master/Documenti/schema_logico_db.png)
+In questo schema sono segnati tutti i campi con il tipo, le primary key e le foreign keys.
 
 ### Design delle interfacce
 
@@ -296,6 +297,9 @@ facilmente generalizzabili o sono specifici di un caso particolare? ecc
 -   https://phppot.com/php/user-registration-in-php-with-login-form-with-mysql-and-code-download/, *Form login e registrazione*, 10.08.2020.
 
 -   https://openweathermap.org/api/one-call-api?gclid=EAIaIQobChMIwt6n_Mqk7AIVkN4YCh3K4AHZEAAYASAAEgKQUfD_BwE, *Open weather API*, 10.08.2020.
+
+-   https://www.wampserver.com/en/, *WAMP server*, 10.01.2020.
+
 
 ## Allegati
 

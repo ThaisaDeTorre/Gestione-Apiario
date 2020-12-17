@@ -13,7 +13,7 @@ class Member
     }   
     
     /**
-     * to check if the username already exists
+     * To check if the username already exists.
      *
      * @param string $username
      * @return boolean
@@ -39,7 +39,7 @@ class Member
     }
 
     /**
-     * to check if the email already exists
+     * To check if the email already exists.
      *
      * @param string $email
      * @return boolean
@@ -65,7 +65,7 @@ class Member
     }
 
     /**
-     * to signup / register a user
+     * To signup / register a user.
      *
      * @return string[] registration status message
      */
@@ -73,6 +73,8 @@ class Member
     {
         $isUsernameExists = $this->isUsernameExists($_POST["username"]);
         $isEmailExists = $this->isEmailExists($_POST["email"]);
+      
+        // check if username or email already exist in the database
         if ($isUsernameExists) {
             $response = array(
                 "status" => "error",
@@ -84,12 +86,11 @@ class Member
                 "message" => "Email already exists."
             );
         } else {
+            // hashed the password if it's not empty
             if (! empty($_POST["signup-password"])) {
-
-                // PHP's password_hash is the best choice to use to store passwords
-                // do not attempt to do your own encryption, it is not safe
                 $hashedPassword = password_hash($_POST["signup-password"], PASSWORD_DEFAULT);
             }
+            // insert values in the database
             $query = 'INSERT INTO user (username, password, email) VALUES (?, ?, ?)';
             $paramType = 'sss';
             $paramValue = array(
@@ -109,7 +110,7 @@ class Member
     }
 
     /**
-     * Ritorna gli utenti registrati.
+     * To get registered user.
      * @return string[] con gli utenti registrati
      */
     public function getMember($username)
@@ -124,30 +125,34 @@ class Member
     }
 
     /**
-     * to login a user
+     * To login a user.
      *
      * @return string
      */
     public function loginMember()
     {
+        // select the user based on the username
         $memberRecord = $this->getMember($_POST["username"]);
-        $loginPassword = 0;
+        $loginPassword = false;
+      
+        // check if there is a user with that username
         if (! empty($memberRecord)) {
+            // check if the password is not null or empty
             if (! empty($_POST["login-password"]) && ! is_null($_POST["login-password"])) {
                 $password = $_POST["login-password"];
             }
             $hashedPassword = $memberRecord[0]["password"];
-            $loginPassword = 0;
+            $loginPassword = false;
             
             if (password_verify($password, $hashedPassword)) {
-                $loginPassword = 1;
+                $loginPassword = true;
             }
-            var_dump(password_verify($password, $hashedPassword));
         } else {
-            $loginPassword = 0;
+            $loginPassword = false;
         }
         
-        if ($loginPassword == 1) {
+        // if the password is right redirect the user to the select-beehive page
+        if ($loginPassword) {
             // login sucess so store the member's username in
             // the session
             session_start();
@@ -155,15 +160,15 @@ class Member
             session_write_close();
             $url = "./select-beehive.php";
             header("Location: $url");
-        } else if ($loginPassword == 0) {
-            $loginStatus = "Invalid username or password.";
+        } else if (!$loginPassword) {
+            $loginStatus = "Username o password errata.";
             return $loginStatus;
         }
     }
     
     /**
-     * Trova l'id dell'utente.
-     * @return l'id dell'utente
+     * To get the user id from the username.
+     * @return the user id
      */
     public function getUserId($username)
     {
@@ -178,14 +183,13 @@ class Member
     }
 
     /**
-     * per registrare un'arnia
+     * To register a new beehive.
      *
      * @return string[] registration status message
      */
     public function registerBeehive($username)
     {
-        // controlli luogo?
-        
+        // checks if the beehive already exists
         $isBeehiveExists = $this->isBeehiveExists($_POST["beehiveName"]);
         if ($isBeehiveExists) {
             $response = array(
@@ -201,7 +205,6 @@ class Member
                 $_POST["queenBee"],
                 $userId
             );
-
             $memberId = $this->ds->insert($query, $paramType, $paramValue);
         
             if (! empty($memberId)) {
@@ -216,15 +219,15 @@ class Member
                 );
             }
         }
-        // Refresh della pagina cosi vedo nella lista la nuova arnia creata.
+        // Refresh the page to show the updated beehive list.
         $url = "./select-beehive.php";
         header("Location: $url");
         return $response;
     }
 
     /**
-     * Ritorna le arnie di un determinato utente.
-     * @return string[] le arnie di un utente
+     * to get the beehives of the user.
+     * @return string[] the beehives of the user
      */
     public function getBeehive($username)
     {
@@ -240,8 +243,9 @@ class Member
     }   
     
     /**
-     * controlla se l'arnia esiste controllando il nome e la data di nascita dell'ape regina.
-     * @return boolean true se esiste gia un'arnia con il nome e la data di nascita dell'ape regina uguale
+     * Checks if the beehive already exists by the name and the queen bee birthdate.
+     *
+     * @return boolean true if the beehive already exists
      */
     public function isBeehiveExists($nome)
     {
@@ -250,7 +254,6 @@ class Member
         $paramValue = array(
             $nome
         );
-        
         $resultArray = $this->ds->select($query, $paramType, $paramValue);
         $count = 0;
         
@@ -265,6 +268,11 @@ class Member
         return $result;
     }
     
+   /**
+     * To get the beehive id from the name.
+     *
+     * @return the beehive id 
+     */
     public function getBeehiveId($name)
     {
         $query = 'SELECT id FROM beehive WHERE name = ?';
@@ -278,20 +286,20 @@ class Member
     }
     
     /**
-     * Elimina l'arnia selezionata dell'utente.
+     * Deletes the beehive selected.
      * @return string[] registration status message
      */
     public function deleteBeehive($name)
     {
         $beeId = $this->getBeehiveId($name);
-        
+        // delete also the treatment of the deleted beehive
         $query = 'DELETE FROM treatment WHERE beehive_id = ?';
         $paramType = 's';
         $paramValue = array(
             $beeId
         );
         $treatId = $this->ds->insert($query, $paramType, $paramValue);
-        
+        // delete the beehive
         $query = 'DELETE FROM beehive WHERE id = ?';
         $memberId = $this->ds->insert($query, $paramType, $paramValue);
         
@@ -306,15 +314,16 @@ class Member
                     "message" => "Errore eliminazione arnia."
                 );
             }
-
+      
+        // Refresh the page to show the updated beehive list.
         $url = "./select-beehive.php";
         header("Location: $url");
         return $response;
     }   
     
     /**
-     * Ritorna la stringa contenente il diario.
-     * @return string il diario
+     * To get the notes from the diary.
+     * @return string note of the diary
      */
     public function getDiary($id)
     {
@@ -325,14 +334,18 @@ class Member
         );
         $diary = $this->ds->select($query, $paramType, $paramValue);
         $txt = $diary[0];
+      
         if (! empty($diary)) {
             return trim($txt['diary']);
-            
         } else {
-            return " ";
+            return "";
         }
     }   
     
+    /**
+     * To update the edits on the diary.
+     * @return string[] registration status message
+     */
     public function setDiary($id)
     {
         $txt = $_POST['diary'];
@@ -354,19 +367,19 @@ class Member
                 "message" => "Errore salvataggio non riuscito."
             );
         }
+      
         // Refresh della pagina cosi vedo nella lista la nuova arnia creata.
         $url = "./home.php";
-        header("Location: $url"); // ???? senza funziona
+        header("Location: $url");
         return $response;
     }
     
     /**
-     * Ritorna i dati sulle arnie dell'utente.
-     * @return string[] i dati sulle arnie dell'utente
+     * To get the treatment data from a beehive.
+     * @return string[] treatment data of the beehive
      */
     public function getTreatmentData($beehiveId)
     {
-//        $query = 'SELECT date AS "Data trattamento", duration AS "Giorni trattamento" FROM beehive, treatment where beehive_id = ?';
         $query = 'SELECT date, duration FROM treatment WHERE beehive_id = ? ORDER BY date';
 
         $paramType = 's';
@@ -378,6 +391,10 @@ class Member
         return $memberRecord;
     }
     
+    /**
+     * To get the data of a beehive from its id.
+     * @return string[] data of the beehive
+     */
     public function getBeeData($beehiveId)
     {
         $query = 'SELECT name AS "Nome", queen_bee_birth AS "Anno nascita ape regina" FROM beehive where beehive.id = ?';
@@ -392,7 +409,8 @@ class Member
     }
     
     /**
-     * Setta i cookie con il nome e l'id dell'arnia selezionata e reindirizza alla home page.
+     * Select the beehive setting the coockie with the id and the name, redirecting
+     * the user to the home management page of the beehive.
      */
     public function selectBeehive($name)
     {
@@ -402,13 +420,10 @@ class Member
             $name
         );
         $result = $this->ds->select($query, $paramType, $paramValue);
-        
-        // gestire ev. errori
         $beehive = $result[0];
 
         setcookie('beehive-name', $beehive['name']);
         setcookie('beehive-id', $beehive['id']);
-//        print_r($_SESSION);
         $url = "./home.php";
         header("Location: $url");
     }
@@ -423,9 +438,7 @@ class Member
             $_POST["treatmentDuration"],
             $_COOKIE['beehive-id']
         );
-        var_dump($paramValue);
         $memberId = $this->ds->insert($query, $paramType, $paramValue);
-//        $memberId = 1;
         if (! empty($memberId)) {
             $response = array(
                 "status" => "success",
@@ -438,7 +451,7 @@ class Member
             );
         }
         
-        // Refresh della pagina.
+        // Refresh the page to show the updated treatment list.
         $url = "./home.php";
         header("Location: $url");
         return $response;

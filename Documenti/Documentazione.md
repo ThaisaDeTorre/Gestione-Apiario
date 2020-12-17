@@ -585,8 +585,7 @@ Dopo ogni aggiunta nel codice ne testavo il funzionamento, per esempio dopo aver
 
 ## Consuntivo
 ![gantt consuntivo](https://github.com/ThaisaDeTorre/Gestione-Apiario/blob/master/Documenti/gantt_consuntivo.png)
-Consuntivo del tempo di lavoro effettivo e considerazioni riguardo le
-differenze rispetto alla pianificazione (cap 1.7) 
+Come si può vedere dall'immagine il gantt consuntivo è piuttosto differente dal gantt preventivo. Questo è sicuramente dovuto alla mia inesperienza in stime di tempo lavorative ma devo dire che all'inizio mi sono persa un po' nel cercare di capire cosa e come fare, perdendo tempo.
 
 ## Conclusioni
 

@@ -163,7 +163,8 @@ Descrive:
 
 ### Schema E-R, schema logico e descrizione.
 
-![schema_ER](https://github.com/ThaisaDeTorre/Gestione-Apiario/blob/master/Documenti/schema_ER_db.png)
+![schema ER](https://github.com/ThaisaDeTorre/Gestione-Apiario/blob/master/Documenti/schema_ER_db.PNG)
+
 In questo schema E-R sono rappresentate tutte le entità necessarie al progetto: 
 
 - Ogni utente è identificato da un id, ha nome, una password e un'email.
@@ -175,18 +176,22 @@ In questo schema E-R sono rappresentate tutte le entità necessarie al progetto:
 Un utente gestisce da 0 a n arnie, un'arnia a sua volta può aver fatto da 0 a n trattamenti; può avere da 0 a n eventi ma ha sempre la meteo di almeno 1 giorno salvata, fino a n giorni.
 
 
-![schema_logico](https://github.com/ThaisaDeTorre/Gestione-Apiario/blob/master/Documenti/schema_logico_db.png)
+![schema_logico](https://github.com/ThaisaDeTorre/Gestione-Apiario/blob/master/Documenti/schema_logico_db.PNG)
+
 In questo schema sono segnati tutti i campi con il tipo, le primary key e le foreign keys.
 
 ### Design delle interfacce
 
-![schema_login_registrazione](https://github.com/ThaisaDeTorre/Gestione-Apiario/blob/master/Documenti/schema_login_registrazione.png)
+![schema login registrazione](https://github.com/ThaisaDeTorre/Gestione-Apiario/blob/master/Documenti/schema_login_registrazione.PNG)
+
 La prima pagina che appare quando si entra sul sito è quella del login **(schema a sinistra)**, se non si ha un account basta cliccare sul link sotto al pulsante 'conferma' per essere reindirizzati sulla pagina per la registrazione dell'account **(schema a destra)**. Una volta registrati appare un messaggio con il risultato della registrazione (se è andato a buon fine o meno) e si può tornare alla pagina di login cliccando sul link sotto al pulsante ed accedere con le proprie credenziali. 
 
-![selezione_arnia_page](https://github.com/ThaisaDeTorre/Gestione-Apiario/blob/master/Documenti/gui_select-beehive.png)
+![selezione arnia page](https://github.com/ThaisaDeTorre/Gestione-Apiario/blob/master/Documenti/gui_select-beehive.PNG)
+
 Una volta loggati si viene reindirizzati sulla pagina per la selezione dell'arnia, dove c'è la lista delle arnie dell'utente. In questa pagina c'è il form per registrare una nuova arnia, si può eliminare un'arnia selezionata oppure si può selezionare un'arnia per andare sulla home per la gestione.
 
-![schema_home_page](https://github.com/ThaisaDeTorre/Gestione-Apiario/blob/master/Documenti/schema_home_page.png)
+![schema home page](https://github.com/ThaisaDeTorre/Gestione-Apiario/blob/master/Documenti/schema_home_page.PNG)
+
 Dopo aver selezionato l'arnia si arriva nella pagina per la sua gestione, a sinistra c'è un navbar per navigare facilmente nella pagina. Nella home vi sarà visualizzata la meteo, il calendario, i trattamenti e i dati dell'arnia. 
 
 ### Design procedurale
@@ -264,7 +269,7 @@ riportati gli errori e i problemi riscontrati e poi risolti durante il
 progetto.
 
 ## Consuntivo
-![gantt consuntivo](https://github.com/ThaisaDeTorre/Gestione-Apiario/blob/master/Documenti/gantt_consuntivo.png)
+![gantt consuntivo](https://github.com/ThaisaDeTorre/Gestione-Apiario/blob/master/Documenti/gantt_consuntivo.PNG)
 Consuntivo del tempo di lavoro effettivo e considerazioni riguardo le
 differenze rispetto alla pianificazione (cap 1.7) 
 
@@ -316,4 +321,4 @@ facilmente generalizzabili o sono specifici di un caso particolare? ecc
 
 -   [Documentazione login e registrazione](https://phppot.com/php/user-registration-in-php-with-login-form-with-mysql-and-code-download/)
 
--   [Mandato]([Diari di lavoro](https://github.com/ThaisaDeTorre/Gestione-Apiario/blob/master/Documenti/QdC_Primo_Semestre_GestioneApiario.docx))
+-   [Mandato](https://github.com/ThaisaDeTorre/Gestione-Apiario/blob/master/Documenti/QdC_Primo_Semestre_GestioneApiario.docx)

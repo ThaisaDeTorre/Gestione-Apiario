@@ -187,61 +187,61 @@ Per la logica del sito ho scritto metacodice. Per il login e la registrazione de
 
 #### Login
 
-HTML + JS
-  btn on click
-    loginValidation() 
-      |-> controllo i dati
-      return isValid
+- HTML + JS
+  - btn on click
+    - loginValidation() 
+       - controllo i dati
+       - return isValid ? true : false
  
- PHP
-   login()
-     controllo dati
-     if userExists && password corrisponde
-     session_start
-     reindirizzo su selezione arnia  
+- PHP
+  - login()
+    - controllo dati
+    - if userExists && password corrisponde
+      - session_start
+      - reindirizzo su selezione arnia  
 
 #### Registrazione
 
-HTML + JS
-  btn on click
-    loginValidation() 
-      |-> controllo i dati
-      return isValid
+- HTML + JS
+  - btn on click
+    - loginValidation() 
+      - controllo i dati
+      - return isValid ? true : false
 
- PHP:
-   login()
-     if !userExists
-      controllo dati
-      -> insert user in db
+- PHP:
+  - login()
+    - if !userExists
+      -  controllo dati
+        - insert user in db
 
 #### Selezione Arnia
 - mostrare arnie:
-  getUserId()
-    select * from arnia where user_id = ?
+  - getUserId()
+    - select * from arnia where user_id = ?
     
 - selezione:
-  click arnia
-  click btn select
-    |-> getBeehiveId
-      set session var beeId
-      header(home.php)
+  - click arnia
+  - click btn select
+    - getBeehiveId
+      - set session var beeId
+      - header(home.php)
 
 - eliminazione:
-  click arnia
-  click btn delete
-    |-> getBeehiveId
-      delete arnia where id=?
-    refresh page
+  - click arnia
+  - click btn delete
+    - getBeehiveId
+      - delete arnia where id=?
+      - refresh page
 
 - aggiunta:
-  click arnia
-  click btn add
-    beehiveValidation() -> controllo input
-      passo a php -> registerBeehive()
-        if !exixts
-        controllo dati
-        insert into beehive (valori)
-        refresh pagina per ricaricare dati  
+  - click arnia
+  - click btn add
+    - beehiveValidation() -> controllo input
+      - passo a php -> registerBeehive()
+        - if !exixts
+        - controllo dati
+        - insert into beehive (valori)
+        - refresh pagina per ricaricare dati  
     
     
 #### Home
@@ -249,36 +249,41 @@ HTML + JS
   preso codice open weather per mostrare meteo
   
 - Calendario
-  preso codice evo-calendar
+    - show
+      - getEvent()
+        - select * from event where bee_id = ?
+  - preso codice evo-calendar
   - add event
-    eventValidation() -> controllo input
-      passo a php -> registerEvent()
-        controllo dati
-        insert into event (valori)
-        refresh pagina per ricaricare dati  
+    - eventValidation() -> controllo input
+      - passo a php -> registerEvent()
+        - controllo dati
+        - insert into event (valori)
+        - refresh pagina per ricaricare dati  
         
-- Trattamenti
-  mostro
+#### Trattamenti
+  - show
+      - getTreat()
+        - select * from treat where bee_id = ?
   - add
-    treatmentValidation() -> controllo input
-      passo a php -> registerTreatment()
-        controllo se non ne esiste gia uno con la stessa data 
-        controllo dati
-        insert into event (valori)
-        refresh pagina per ricaricare dati
+    - treatmentValidation() -> controllo input
+      - passo a php -> registerTreatment()
+        - controllo se non ne esiste gia uno con la stessa data 
+        - controllo dati
+        - insert into event (valori)
+        - refresh pagina per ricaricare dati
     
-
-- Dati
-  getUserId
-  select * from user where id = ?
+#### Dati
+  - getUserId
+  - select * from user where id = ?
 
 ## Implementazione
 
 Questo progetto necessita di un web server su cui mettere il sito, per cui ho cominciato con il creare una macchina virtuale Windows 10 per poter installare WAMP (Windows, Apache, MySQL, Php). Una volta creata ho scaricato e installato WAMP sulla VM per poter lavorare.
+In seguito la scuola mi ha messo a disposizione il servizio di Infomaniak (FTP e PhpMyAdmin) per lavorare.
 
 ### Database
 Una volta che il web server funziona si inizia a creare il database basandosi sugli schemi fatti in precedenza. Il file sql contenente tutta la struttura del database è molto semplice, contiene le cinque tabelle necessarie e basta, i dati verranno inseriti quando l'utente ne aggiungerà usando il sito.
-La connessione al database avviene nella classe DataSource.php, per connettersi al database si deve definire l'utente, la password, l'host e il nome del database proprio come se ci si dovesse connettere dal cmd. 
+La connessione al database avviene nella classe `DataSource.php`, per connettersi al database si deve definire l'utente, la password, l'host e il nome del database proprio come se ci si dovesse connettere dal cmd. 
 In questo caso si deve inserire il valore alle costanti: 
 ```php
 const HOST = 'localhost';
@@ -286,7 +291,6 @@ const USERNAME = 'username';
 const PASSWORD = 'password';
 const DATABASENAME = 'db_name';
 ```
-
 
 ### Login
 Per il form del login e la registrazione dell'utente ho usato del codice preso online da phppot, l'ho studiato e adattato alle mie necessità. 
@@ -296,40 +300,62 @@ Con php controllo se il `$_POST` del bottone è vuoto, se non lo è significa ch
 Controllo se esiste un utente con lo stesso username, ricontrollo i dati anche dal lato server e se sono validi ridirigo l'utente alla pagina di selezione arnia dopo aver iniziato la sessione e settato le variabili da utilizzare in quest'ultima.
 ```php
 public function loginMember()
-    {
-        // select the user based on the username
-        $memberRecord = $this->getMember($_POST["username"]);
+{
+    // select the user based on the username
+    $memberRecord = $this->getMember($_POST["username"]);
+    $loginPassword = false;
+
+    // check if there is a user with that username
+    if (! empty($memberRecord)) {
+        // check if the password is not null or empty
+        if (! empty($_POST["login-password"]) && ! is_null($_POST["login-password"])) {
+            $password = $_POST["login-password"];
+        }
+        $hashedPassword = $memberRecord[0]["password"];
         $loginPassword = false;
-      
-        // check if there is a user with that username
-        if (! empty($memberRecord)) {
-            // check if the password is not null or empty
-            if (! empty($_POST["login-password"]) && ! is_null($_POST["login-password"])) {
-                $password = $_POST["login-password"];
-            }
-            $hashedPassword = $memberRecord[0]["password"];
-            $loginPassword = false;
-            
-            if (password_verify($password, $hashedPassword)) {
-                $loginPassword = true;
-            }
-        } else {
-            $loginPassword = false;
-        }
         
-        // if the password is right redirect the user to the select-beehive page
-        if ($loginPassword) {
-            // login sucess so store the member's username in the session
-            session_start();
-            $_SESSION["username"] = $memberRecord[0]["username"];
-            session_write_close();
-            $url = "./select-beehive.php";
-            header("Location: $url");
-        } else if (!$loginPassword) {
-            $loginStatus = "Username o password errata.";
-            return $loginStatus;
+        if (password_verify($password, $hashedPassword)) {
+            $loginPassword = true;
         }
+    } else {
+        $loginPassword = false;
     }
+    
+    // if the password is right redirect the user to the select-beehive page
+    if ($loginPassword) {
+        // login sucess so store the member's username in the session
+        session_start();
+        $_SESSION["username"] = $memberRecord[0]["username"];
+        session_write_close();
+        $url = "./select-beehive.php";
+        header("Location: $url");
+    } else if (!$loginPassword) {
+        $loginStatus = "Username o password errata.";
+        return $loginStatus;
+    }
+}
+```
+### Sicurezza login
+Per le pagine del sito che si possono visualizzare solamente se si è loggati, come prima cosa nel file devo controllare che la variabile `$_SESSION['username']` sia settata, in questo modo controllo se chi sta vedendo quella determinata pagina è loggato o meno. Se non è loggato lo reindirizzo al `login.php`.
+```php
+// start the session
+session_start();
+use Phppot\Member;
+
+// check if the username is set in the session
+if (isset($_SESSION["username"])) {
+    $username = $_SESSION["username"];
+    // code ...
+} else {
+    // since the username is not set in session, the user is not-logged-in
+    // he is trying to access this page unauthorized
+    // so let's clear all session variables and redirect him to index
+    session_unset();
+    session_write_close();
+    $url = "./index.php";
+    header("Location: $url");
+}
+
 ```
 
 ### Registrazone / aggiunta dati
@@ -379,31 +405,183 @@ public function registerMember()
 }
 ```
 
-### Select beehive
-  show
 
-  delete
-### Home
-  meteo
-  calendar
-    show
+### Selezionare i dati 
+Come per la registrazione, la logica si ripete dato che nel sito vengono mostrati sempre i dati relativi alle arnie per cui bisogna prenderli dal database e, tramite php, mostrarli a schermo all'utente. Prendendo ad esempio nella pagina `select-beehive.php` la lista di arnie dell'utente: la query è molto semplice, sarebbe `SELECT * FROM beehive WHERE user_id = ?` dove '?' è l'id dell'utente di cui dobbiamo stampare le arnie.
+Dobbiamo prendere `user_id` per stampare solo le arnie dell'utente loggato, usiamo quindi `getUserId($username)` che ritorna l'id basandosi sul nome utente e usarlo in `getBeeData($beeId)`:
+    
+```php
+public function getUserId($username)
+{
+    $query = 'SELECT id FROM user where username = ?';
+    $paramType = 's';
+    $paramValue = array(
+        $username
+    );
+    $userId = $this->ds->select($query, $paramType, $paramValue);
+    $id = $userId[0];
+    return $id['id'];
+}
 
-  treatment
-    show
+public function getBeeData($beehiveId)
+{
+    $query = 'SELECT name AS "Nome", queen_bee_birth AS "Anno nascita ape regina" FROM beehive where beehive.id = ?';
 
-  data
-    show
+    $paramType = 's';
+    $paramValue = array(
+        $beehiveId
+    );
+    $memberRecord = $this->ds->select($query, $paramType, $paramValue);
 
+    return $memberRecord;
+}
+```
+
+Non mi resta che richiamare nel mio file `select-beehive.php` il risultato della query e stamparlo con un ciclo:
+Seleziono i dati
+```php
+// import Member.php
+require_once './Model/Member.php';
+$member = new Member();
+
+// get all the beehives of the user logged
+$beehiveResult = $member->getBeehive($username);
+```
+Stampo i dati
+```php
+<?php
+    if(! empty($beehiveResult)) {
+        foreach ($beehiveResult as $arnie) {
+            foreach ($arnie as $nomeArnia) {
+            ?>
+            <input id="<?php echo $nomeArnia;?>" type="radio" value="<?php echo $nomeArnia;?>" name="beehive"> 
+
+            <label for="<?php echo $nomeArnia;?>"><?php echo $nomeArnia;?></label><br>
+
+            <?php
+            }
+        }
+        ?>
+        <input id="delete-beehive" class="btn btn-primary" type="submit" value="Elimina" name="delete-beehive"><br><br>
+
+        <input id="selected-beehive" class="btn btn-primary" type="submit" value="Seleziona" name="selected-beehive">
+        <?php
+    }
+?>
+```
+
+### Cancellare i dati
+Anche qui ho spesso bisogno di cancellare i dati che inserisco, prendendo d'esempio le arnie: seleziono l'arnia che voglio eliminare tramite il radio button e premo sul bottone 'Elimina'. In quel momento tramite php controllo se il bottone 'elimina' è stato premuto, se è stato premuto salvo il risultato dell'azione nella variabile `$deleteResponse` che stamperò per l'utente come feedback. Viene richiamato il metodo `deleteBeehive($param)` a cui passo `$_POST["beehive"]` in modo da cancellare solo l'aria selezionata.
+```php
+public function deleteBeehive($name)
+{
+    $beeId = $this->getBeehiveId($name);
+    // delete also the treatment of the deleted beehive
+    $query = 'DELETE FROM treatment WHERE beehive_id = ?';
+    $paramType = 's';
+    $paramValue = array(
+        $beeId
+    );
+    $treatId = $this->ds->insert($query, $paramType, $paramValue);
+    // delete the beehive
+    $query = 'DELETE FROM beehive WHERE id = ?';
+    $memberId = $this->ds->insert($query, $paramType, $paramValue);
+
+    if (! empty($memberId) && ! empty($treatId)) {
+            $response = array(
+                "status" => "success",
+                "message" => "Arnia eliminata."
+            );
+        } else {
+            $response = array(
+                "status" => "error",
+                "message" => "Errore eliminazione arnia."
+            );
+        }
+
+    // Refresh the page to show the updated beehive list.
+    $url = "./select-beehive.php";
+    header("Location: $url");
+    return $response;
+}   
+```
+### Diario
+Il diario è un semplice campio di testo nel quale posso scrivere liberamente, il contenuto del diario dell'apiario corrente lo posso prendere semplicemente inserendo il risultato di `getDiary($beeId)` che funziona come gli altri get *(spiegati in [Selezionare i dati](#Selezionare-i-dati))*.
+
+Una volta modificato però dobbiamo salvare i cambiamenti apportati, in questo caso prendiamo il contenuto del diario e facciamo un `UPDATE` al database. Prendendo spunto dall'[aggiunta dati](#Registrazone-/-aggiunta dati) sfuttiamo un bottone per confermare le modifiche e passarle al database. Sta volta però richiamiamo il metodo `setDiary($id)`:
+```php
+public function setDiary($id)
+{
+    $txt = $_POST['diary'];
+    $query = "update beehive set diary = '".$txt."' where id = ?";
+    $paramType = 's';
+    $paramValue = array(
+        $id
+    );
+    $diaryResponse = $this->ds->insert($query, $paramType, $paramValue);
+
+    if (isset($diaryResponse)) {
+        $response = array(
+            "status" => "success",
+            "message" => "Salvataggio riuscito."
+        );
+    } else {
+        $response = array(
+            "status" => "error",
+            "message" => "Errore salvataggio non riuscito."
+        );
+    }
+
+    // Refresh della pagina cosi vedo nella lista la nuova arnia creata.
+    $url = "./home.php";
+    header("Location: $url");
+    return $response;
+}
+```
+
+### Meteo
+La meteo la prendo grazie all'API Open Weather, per poter stampare i dati del meteo devo creare un account openweather per poter mettere le mie credenziali nel codice e prendere i dati. L'apiKey viene data una volta creato l'account, per il resto basta mettere nel codice questo pezzo:
+```html
+<!-- Open Weather Map code --> 
+<?php
+    $apiKey = "key";
+    $cityId = "2657896"; // Zurigo
+    $googleApiUrl = "http://api.openweathermap.org/data/2.5/weather?id=" . $cityId . "&lang=en&units=metric&APPID=" . $apiKey;
+
+    $ch = curl_init();
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+    curl_setopt($ch, CURLOPT_URL, $googleApiUrl);
+    curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
+    curl_setopt($ch, CURLOPT_VERBOSE, 0);
+    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+    $response = curl_exec($ch);
+
+    curl_close($ch);
+    $data = json_decode($response);
+    $currentTime = time();
+?>
+<div class="report-container">
+  <div class="time">
+    <div><?php echo date("l g:i a", $currentTime); ?></div>
+    <div><?php echo date("jS F, Y",$currentTime); ?></div>
+    <div><?php echo ucwords($data->weather[0]->description); ?></div>
+  </div>
+  <div class="weather-forecast">
+    <span> <?php echo $data->main->temp_max; ?>°C (max)</span>
+    <span><?php echo $data->main->temp_min; ?>°C (min)</span>
+  </div>
+  <div class="time">
+    <div>Humidity: <?php echo $data->main->humidity; ?> %</div>
+    <div>Wind: <?php echo $data->wind->speed; ?> km/h</div>
+  </div>
+</div>
+```
+
+### Calendario
+Anche il calendario l'ho trovato già fatto, mi è bastato integrarlo nel codice e cambiarne il css per adattarlo alla grafica del sito dell'apiario.
 
 ## Test
 Dopo ogni aggiunta nel codice ne testavo il funzionamento, per esempio dopo aver finito di scrivere il form per l'aggiunta delle arnie e messo i controlli testavo se mi prendeva comunque i campi vuoti o inserivo testo nella data di nascita della regina. 
-
-### Mancanze/limitazioni conosciute
-
-Descrizione con motivazione di eventuali elementi mancanti o non
-completamente implementati, al di fuori dei test case. Non devono essere
-riportati gli errori e i problemi riscontrati e poi risolti durante il
-progetto.
 
 ## Consuntivo
 ![gantt consuntivo](https://github.com/ThaisaDeTorre/Gestione-Apiario/blob/master/Documenti/gantt_consuntivo.png)
@@ -412,17 +590,15 @@ differenze rispetto alla pianificazione (cap 1.7)
 
 ## Conclusioni
 
-Quali sono le implicazioni della mia soluzione? Che impatto avrà?
-Cambierà il mondo? È un successo importante? È solo un’aggiunta
-marginale o è semplicemente servita per scoprire che questo percorso è
-stato una perdita di tempo? I risultati ottenuti sono generali,
-facilmente generalizzabili o sono specifici di un caso particolare? ecc
+Questo progetto è abbastanza funzionale, ci sono ancora dei dettagli da mettere a posto ma trovo che faccia quello che deve fare.
+Sono abbastanza soddisfatta di come sia andato il progetto, a parte qualche problema che mi ha preso piu tempo del previsto sono riuscita a fare gran parte del lavoro e ne sono abbastanza felice. 
+Ho avuto dei problemi soprattutto all'inizio perché ero un po' spaesata, non conoscendo molto bene php e non avendo mai fatto nessun progetto prima non sapevo da dove cominciare infatti partire è stata dura, ma una volta partita sono andata sempre piu decisa.
 
 ### Sviluppi futuri
   Migliorie o estensioni che possono essere sviluppate sul prodotto.
 
 ### Considerazioni personali
-  Cosa ho imparato in questo progetto? ecc
+  Mi è piaciuto molto questo progetto, a parte i problemi iniziali il resto è andato piuttosto bene. Mi è stato molto utile per capire meglio php e per imparare come sfuttare i database nei siti web.
 
 ## Sitografia
 
@@ -435,8 +611,6 @@ facilmente generalizzabili o sono specifici di un caso particolare? ecc
 -   https://openweathermap.org/api/one-call-api?gclid=EAIaIQobChMIwt6n_Mqk7AIVkN4YCh3K4AHZEAAYASAAEgKQUfD_BwE, *Open weather API*, 08.10.2020.
 
 -   https://www.jqueryscript.net/demo/event-calendar-evo/, *Evo-calendar*, 10.12.2020.
-
-
 
 
 ## Allegati

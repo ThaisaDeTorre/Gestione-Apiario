@@ -62,33 +62,12 @@
 
 ### Abstract
 
-  E’ una breve e accurata rappresentazione dei contenuti di un documento,
-  senza notazioni critiche o valutazioni. Lo scopo di un abstract efficace
-  dovrebbe essere quello di far conoscere all’utente il contenuto di base
-  di un documento e metterlo nella condizione di decidere se risponde ai
-  suoi interessi e se è opportuno il ricorso al documento originale.
-
-  Può contenere alcuni o tutti gli elementi seguenti:
-
-  -   **Background/Situazione iniziale** -> apicoltore deve tenere traccia di dati sulle proprie arnie
-
-  -   **Descrizione del problema e motivazione**: Che problema ho cercato
-      di risolvere? Questa sezione dovrebbe includere l'importanza del
-      vostro lavoro, la difficoltà dell'area e l'effetto che potrebbe
-      avere se portato a termine con successo. -> avendo tante arnie può risultare complicato tenere traccia dei dati manualmente
-
-  -   **Approccio/Metodi**: Come ho ottenuto dei progressi? Come ho
-      risolto il problema (tecniche…)? Quale è stata l’entità del mio
-      lavoro? Che fattori importanti controllo, ignoro o misuro? -> con un app posso organizzarmi meglio
-
-  -   **Risultati**: Quale è la risposta? Quali sono i risultati? Quanto è
-      più veloce, più sicuro, più economico o in qualche altro aspetto
-      migliore di altri prodotti/soluzioni? -> una web app può essere la soluzione, accessibile a chiunque, da piu utenti. Può avere piu arnie ecc
-
-  Un apicoltore qualsiasi ha bisogno di gestire i propri apiari, tenere conto dei vari trattamenti e attività, eventuali appunti sulle singole arnie... Tenere tutte queste informazioni scritte a mano può essere difficile, soprattutto quando il numero di arnie da gestire diventa sostanzioso. Un applicativo web in grado di tenere informazioni utili sulle arnie in modo organizzato può essere utile, poter memorizzare la meteo della zona, degli appunti personali per ogni arnia, inserire eventi in un calendario ecc. 
+  Un apicoltore ha bisogno di tenere organizzati i dati sulle proprie arnie, grazie a questo progetto l'apicoltore potrà gestire facilmente le sue arnie tramite una pagina web. Potrà avere memorizzate quante arnie vorrà, ogniuna con i suoi dati specifici come ad esempio l'anno di nascita dell'ape regina, il luogo e il nome dell'arnia. L'utente avrà a disposizione un calendario nel quale potrà aggiungere eventi, ogni arnia avrà il suo diario nel quale segnare delle note e una tabella nella quale salvare i trattamenti necessari. Questa web app ha anche a disposizione un servizio meteo in tempo reale, i cui dati vengono salvati anche nel database.
+  Si possono trovare molti software simili con cui risolvere il problema.  
   
-  > english...
-  >
+  > A apiarist needs to keep organized the data about his hives, thanks to this project the beekeeper will be able to easily manage his hives through a web page. He will be able to have as many hives stored as he wants, each one with its specific data such as the year of birth of the queen bee, the place and the name of the hive. The user will have a calendar in which he can add events, each hive will have its own diary in which to write notes and a table in which to save the necessary treatments. This web app also has a real-time weather service, whose data is also saved in the database.
+  > Obviously, you can find many similar software with which to solve the problem.  
+  
 ### Scopo
 
   Questo è un progetto didattico che serve a gestire degli apiari. E' fatto in modo da poter accedere da qualsiasi pc per poter gestire semplicemente le proprie api, ci sono funzionalità utili come un diario nel quale scrivere annotazioni per ogni arnia, un calendario in cui inserire gli eventi, ecc. 

@@ -39,30 +39,11 @@ if (isset($_SESSION["username"])) {
         $treatmentResponse = $member->registerTreatment();
     }
   
-//    $paramValue = array(
-//            $_POST["eventName"],
-//            $_POST["eventStart"],
-//            $_POST["eventEnd"],
-//            $_POST["eventType"],
-//            $_POST["eventDesc"],
-//            $_COOKIE['beehive-id']
-//        );
-//      var_dump($paramValue);
     // Registers a new event
-    if (! empty($_POST["add-event-btn"])) {
-        $calendarResponse = '';
-        $calendarResponse = $member->registerEvent();
-//      var_dump($calendarResponse);
-//      $paramValue = array(
-//            $_POST["eventName"],
-//            $_POST["eventStart"],
-//            $_POST["eventEnd"],
-//            $_POST["eventType"],
-//            $_POST["eventDesc"],
-//            $_COOKIE['beehive-id']
-//        );
-//      var_dump($paramValue);
-    }
+//    if (! empty($_POST["add-event-btn"])) {
+//        $calendarResponse = '';
+//        $calendarResponse = $member->registerEvent();
+//    }
         
 } else {
     // since the username is not set in session, the user is not-logged-in
@@ -91,7 +72,6 @@ if (isset($_SESSION["username"])) {
     <link rel="stylesheet" type="text/css" href="evo-calendar/css/evo-calendar.css"/>
   </head>
   <body onload="displayCalendar()">
-    <p id="debug"></p>
     <div class="wrapper d-flex align-items-stretch">
       <!--   Sidebar   -->
       <nav id="sidebar">
@@ -359,7 +339,7 @@ if (isset($_SESSION["username"])) {
             <div class="row">
                 <div class="inline-block">
                   <div class="form-label">
-                    Descrizione <span class="error" id="eventDesc-info"></span>
+                    Descrizione <span id="eventDesc-info"></span>
                   </div>
                   <textarea id="eventDesc" name="eventDesc" rows="4" cols="50"></textarea>
                 </div>
@@ -374,7 +354,7 @@ if (isset($_SESSION["username"])) {
         
         <!--    Diary notes    -->
         <div id="diario" class="title-chapter">
-          <h4>Diario</h4>
+          <h4>Note Diario</h4>
             
           <form name="diary-form" action="" method="post" onsubmit="return true">
               <?php
@@ -513,15 +493,15 @@ if (isset($_SESSION["username"])) {
     <script src="evo-calendar/js/evo-calendar.js"></script>
     <script>
         var eventId = 1;
+        var events = [];
       
         /**
          * Display the calendar.
          */
         function displayCalendar() {
-          Events = [];
-          
+
           $('#calendar').evoCalendar({
-              calendarEvents: Events,
+              calendarEvents: events,
 //              format:'dd/mm/yyyy',
   //            titleFormat:'MM yyyy',
               todayHighlight: true,
@@ -533,53 +513,43 @@ if (isset($_SESSION["username"])) {
       /**
        * Adds the event to the calendar.
        * @param name name of the event
-       * @param startDate start date of the event
-       * @param endDate end date of the event
+       * @param date date of the event, array or single date
        * @param type type of the event
        * @param desc description of the event
        * @return true if the event is added successfully
        */
-      function addEvent(name, startDate, endDate, type, desc) {
+      function addEvent(name, date, type, desc) {
         console.log("adding event...");
+        console.log("------------------------");
         console.log("name: "+name);
-        console.log("start: "+startDate);
-        console.log("end: "+endDate);
+//        console.log("start: "+startDate);
+//        console.log("end: "+endDate);
+        console.log("date: "+date);
         console.log("type: "+type);
         console.log("desc: "+desc);
-        var date;
         
-        if (startDate == endDate) {
-          date = startDate;
-        } else {
-          date = "["+startDate+","+endDate+"]";
-        }
-        console.log("date: "+date);
-        var demo = {
+        var currEvent = {
           id: eventId,
           name: name,
           date: date,
           description: desc,
           type: type
         };
-//        var jsonEvent = JSON.stringify(event);
-//        var data = "id:"+eventId+",name:"+name+",date:"+date+",description:"+desc+",type:"+type;
         
-        $("#calendar").evoCalendar('addCalendarEvent', [{
-          id: eventId,
-          name: name,
-          date: date,
-          description: desc,
-          type: type
-        }]);
+        events.push(currEvent);
+//        $("#calendar").evoCalendar('addCalendarEvent', currEvent);
         eventId++;
-        /*$("#calendar").evoCalendar('addCalendarEvent', [{
-          id:'1',
-          name:"Prova",
-          date:"12-10-2020",
-          description:"hellooooo ",
-          type:"Event"
-        }]);
-
+        displayCalendar();
+//        location.reload();
+//        $("#calendar").evoCalendar('addCalendarEvent', [{
+//          id:'1',
+//          name:"Prova",
+//          date:"12-11-2020",
+//          description:"hellooooo ",
+//          type:"Event"
+//        }]);
+//        
+/*
        $("#calendar").evoCalendar('addCalendarEvent', [{
           id:'2',
           name:"natale",
@@ -615,6 +585,11 @@ if (isset($_SESSION["username"])) {
         var endDate = $("#eventEnd").val();
         var type = $("#eventType").val();
         var desc = $("#eventDesc").val();
+        
+        var date;
+//        
+//        console.log("start type: "+typeof startDate);
+//        console.log("end type: "+typeof endDate);
 
         if (name.trim() == "") {
             $("#eventName-info").html("required.").css("color", "#ee0000").show();
@@ -626,9 +601,10 @@ if (isset($_SESSION["username"])) {
             $("#eventType").addClass("error-field");
             valid = false;
         }
-        if (desc.trim() == "") {
-            $("#eventDesc-info").html("required.").css("color", "#ee0000").show();
-            $("#eventDesc").addClass("error-field");
+        
+        if (startDate == "") {
+            $("#eventStart-info").html("required.").css("color", "#ee0000").show();
+            $("#eventStart").addClass("error-field");
             valid = false;
         }
         if (endDate == "") {
@@ -636,23 +612,53 @@ if (isset($_SESSION["username"])) {
             $("#eventEnd").addClass("error-field");
             valid = false;
         }
-        if (startDate == "") {
-            $("#eventStart-info").html("required.").css("color", "#ee0000").show();
-            $("#eventStart").addClass("error-field");
-            valid = false;
-        }
+        // convert string to Date
+        var sd = new Date(startDate);
+        var ed = new Date(endDate);
         
-        if (valid == false) {
+        if (sd.valueOf() == ed.valueOf()) {
+          console.log("same date");
+            var d = sd.getDate();
+            var m = sd.getMonth()+1;
+            var y = sd.getFullYear();
+            date = m+"-"+d+"-"+y;
+          
+        } else if (ed.valueOf() > sd.valueOf()) {
+          console.log("end > start");
+            var d = sd.getDate();
+            var m = sd.getMonth()+1;
+            var y = sd.getFullYear();
+          
+            sd = m+"-"+d+"-"+y;
+          console.log("sd: "+sd);
+          console.log("sd type: "+typeof sd);
+            d = ed.getDate();
+            m = ed.getMonth()+1;
+            y = ed.getFullYear();
+            ed = m+"-"+d+"-"+y;
+          console.log("ed: "+ed);
+          console.log("ed type: "+typeof ed);
+          
+            date = [sd, ed];
+          console.log("date type: "+typeof date);
+          console.log("date [0]: "+date[0]);
+          console.log("date [1]: "+date[1]);
+          
+        } else if (ed.valueOf() < sd.valueOf()) {
+          $("#eventEnd-info").html("Data fine non può essere prima della data d'inizio.").css("color", "#ee0000").show();
+          valid = false;
+        }
+          
+        if (! valid) {
         console.log("data false");
             $('.error-field').first().focus();
             valid = false;
-          return valid;
         } else {
         console.log("data true -> add event");
-          addEvent(name, startDate, endDate, type, desc); 
+          addEvent(name, date, type, desc); 
           valid = true;
-          return valid;
         }
+          return valid;
       }
       
       /**

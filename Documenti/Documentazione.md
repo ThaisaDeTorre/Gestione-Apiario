@@ -186,11 +186,11 @@ In questo schema sono segnati tutti i campi con il tipo, le primary key e le for
 
 La prima pagina che appare quando si entra sul sito è quella del login **(schema a sinistra)**, se non si ha un account basta cliccare sul link sotto al pulsante 'conferma' per essere reindirizzati sulla pagina per la registrazione dell'account **(schema a destra)**. Una volta registrati appare un messaggio con il risultato della registrazione (se è andato a buon fine o meno) e si può tornare alla pagina di login cliccando sul link sotto al pulsante ed accedere con le proprie credenziali. 
 
-![selezione arnia page](https://github.com/ThaisaDeTorre/Gestione-Apiario/blob/master/Documenti/gui_select-beehive.PNG)
+![selezione arnia page](https://github.com/ThaisaDeTorre/Gestione-Apiario/blob/master/Documenti/gui_select-beehive.png)
 
 Una volta loggati si viene reindirizzati sulla pagina per la selezione dell'arnia, dove c'è la lista delle arnie dell'utente. In questa pagina c'è il form per registrare una nuova arnia, si può eliminare un'arnia selezionata oppure si può selezionare un'arnia per andare sulla home per la gestione.
 
-![schema home page](https://github.com/ThaisaDeTorre/Gestione-Apiario/blob/master/Documenti/schema_home_page.PNG)
+![schema home page](https://github.com/ThaisaDeTorre/Gestione-Apiario/blob/master/Documenti/schema_home.PNG)
 
 Dopo aver selezionato l'arnia si arriva nella pagina per la sua gestione, a sinistra c'è un navbar per navigare facilmente nella pagina. Nella home vi sarà visualizzata la meteo, il calendario, i trattamenti e i dati dell'arnia. 
 
@@ -269,7 +269,7 @@ riportati gli errori e i problemi riscontrati e poi risolti durante il
 progetto.
 
 ## Consuntivo
-![gantt consuntivo](https://github.com/ThaisaDeTorre/Gestione-Apiario/blob/master/Documenti/gantt_consuntivo.PNG)
+![gantt consuntivo](https://github.com/ThaisaDeTorre/Gestione-Apiario/blob/master/Documenti/gantt_consuntivo.png)
 Consuntivo del tempo di lavoro effettivo e considerazioni riguardo le
 differenze rispetto alla pianificazione (cap 1.7) 
 

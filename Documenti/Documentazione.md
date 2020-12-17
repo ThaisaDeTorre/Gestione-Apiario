@@ -288,11 +288,13 @@ const DATABASENAME = 'db_name';
 ```
 
 
-### Login & register 
+### Login
 Per il form del login e la registrazione dell'utente ho usato del codice preso online da phppot, l'ho studiato e adattato alle mie necessità. 
 Quando l'utente inserisce i dati nel form per il login e preme il pulsante, il form va a richiamare la funzione `loginValidation()` che va a controllare la validità dei dati passati dall'utente. Se i dati sono validi ritorna `true`, altrimenti ritorna `false`. 
-Con php controllo se il `$_POST` del bottone è vuoto, se non lo è significa che i valori di input sono validi quindi il form passa a php i valori di input. A questo punto richiamo la funtione `loginMember()` per loggare l'utente; il metodo ritorna lo stato del login, se è andato a buon fine o meno.
-`
+Con php controllo se il `$_POST` del bottone è vuoto, se non lo è significa che i valori di input sono validi quindi il form passa a php i valori di input. A questo punto richiamo la funzione `loginMember()` per loggare l'utente; il metodo ritorna lo stato del login, se è andato a buon fine o meno.
+
+Controllo se esiste un utente con lo stesso username, ricontrollo i dati anche dal lato server e se sono validi ridirigo l'utente alla pagina di selezione arnia dopo aver iniziato la sessione e settato le variabili da utilizzare in quest'ultima.
+```php
 public function loginMember()
     {
         // select the user based on the username
@@ -317,8 +319,7 @@ public function loginMember()
         
         // if the password is right redirect the user to the select-beehive page
         if ($loginPassword) {
-            // login sucess so store the member's username in
-            // the session
+            // login sucess so store the member's username in the session
             session_start();
             $_SESSION["username"] = $memberRecord[0]["username"];
             session_write_close();
@@ -329,62 +330,67 @@ public function loginMember()
             return $loginStatus;
         }
     }
-`
+```
 
+### Registrazone / aggiunta dati
+Per la registrazione utente, per l'aggiunta di una nuova arnia, per l'aggiunga di trattamenti o eventi la logica è la stessa. C'è un form nel quale l'utente inserisce i dati che vengono controllati tramite un metodo che ne verifichi la validità lato client. Se i dati passano il primo controllo, viene controllato da php se il bottone non sia vuoto e viene chiamato il metodo per la registrazione del dato della classe `Member.php`. 
 
-`
+Questo è il metodo per registrare l'utente, ma le differenze tra questo metodo e la registrazione degli altri dati sono minime.
+In tutti i casi devo controllare se esiste già un record uguale a quello che voglio aggiungere, se non esiste controllo la validità dei dati di nuovo per poi fare la query ed eseguirla sul database. Come sempre il metodo ritorna se l'azione è andata a buon fine o meno in modo da stamparne lo stato sulla pagina per l'utente.
+```php
 public function registerMember()
-    {
-        $isUsernameExists = $this->isUsernameExists($_POST["username"]);
-        $isEmailExists = $this->isEmailExists($_POST["email"]);
-      
-        // check if username or email already exist in the database
-        if ($isUsernameExists) {
-            $response = array(
-                "status" => "error",
-                "message" => "Username already exists."
-            );
-        } else if ($isEmailExists) {
-            $response = array(
-                "status" => "error",
-                "message" => "Email already exists."
-            );
-        } else {
-            // hashed the password if it's not empty
-            if (! empty($_POST["signup-password"])) {
-                $hashedPassword = password_hash($_POST["signup-password"], PASSWORD_DEFAULT);
-            }
-            // insert values in the database
-            $query = 'INSERT INTO user (username, password, email) VALUES (?, ?, ?)';
-            $paramType = 'sss';
-            $paramValue = array(
-                $_POST["username"],
-                $hashedPassword,
-                $_POST["email"]
-            );
-            $memberId = $this->ds->insert($query, $paramType, $paramValue);
-            if (! empty($memberId)) {
-                $response = array(
-                    "status" => "success",
-                    "message" => "You have registered successfully."
-                );
-            }
+{
+    $isUsernameExists = $this->isUsernameExists($_POST["username"]);
+    $isEmailExists = $this->isEmailExists($_POST["email"]);
+  
+    // check if username or email already exist in the database
+    if ($isUsernameExists) {
+        $response = array(
+            "status" => "error",
+            "message" => "Username already exists."
+        );
+    } else if ($isEmailExists) {
+        $response = array(
+            "status" => "error",
+            "message" => "Email already exists."
+        );
+    } else {
+        // hashes the password if it's not empty
+        if (! empty($_POST["signup-password"])) {
+            $hashedPassword = password_hash($_POST["signup-password"], PASSWORD_DEFAULT);
         }
-        return $response;
+        // insert values in the database
+        $query = 'INSERT INTO user (username, password, email) VALUES (?, ?, ?)';
+        $paramType = 'sss';
+        $paramValue = array(
+            $_POST["username"],
+            $hashedPassword,
+            $_POST["email"]
+        );
+        $memberId = $this->ds->insert($query, $paramType, $paramValue);
+        if (! empty($memberId)) {
+            $response = array(
+                "status" => "success",
+                "message" => "You have registered successfully."
+            );
+        }
     }
-    `
+    return $response;
+}
+```
+
 ### Select beehive
   show
-  add
+
   delete
 ### Home
   meteo
   calendar
     show
-    add
+
   treatment
     show
-    add
+
   data
     show
 

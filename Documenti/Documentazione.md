@@ -26,10 +26,6 @@
 
 1. [Test](#test)
 
-  - [Protocollo di test](#protocollo-di-test)
-
-  - [Risultati test](#risultati-test)
-
   - [Mancanze/limitazioni conosciute](#mancanze/limitazioni-conosciute)
 
 1. [Consuntivo](#consuntivo)
@@ -192,35 +188,31 @@ Per la logica del sito ho scritto metacodice. Per il login e la registrazione de
 #### Login
 
 HTML + JS
----------
-btn on click
-  loginValidation() 
-    |-> controllo i dati
-    return isValid
+  btn on click
+    loginValidation() 
+      |-> controllo i dati
+      return isValid
  
  PHP
- ----------
- login()
-   controllo dati
-   if userExists && password corrisponde
-   session_start
-   reindirizzo su selezione arnia  
- 
+   login()
+     controllo dati
+     if userExists && password corrisponde
+     session_start
+     reindirizzo su selezione arnia  
+
 #### Registrazione
 
 HTML + JS
----------
-btn on click
-  loginValidation() 
-    |-> controllo i dati
-    return isValid
- 
- PHP
- ----------
- login()
-   if !userExists
-    controllo dati
-    -> insert user in db
+  btn on click
+    loginValidation() 
+      |-> controllo i dati
+      return isValid
+
+ PHP:
+   login()
+     if !userExists
+      controllo dati
+      -> insert user in db
 
 #### Selezione Arnia
 - mostrare arnie:
@@ -288,12 +280,12 @@ Questo progetto necessita di un web server su cui mettere il sito, per cui ho co
 Una volta che il web server funziona si inizia a creare il database basandosi sugli schemi fatti in precedenza. Il file sql contenente tutta la struttura del database è molto semplice, contiene le cinque tabelle necessarie e basta, i dati verranno inseriti quando l'utente ne aggiungerà usando il sito.
 La connessione al database avviene nella classe DataSource.php, per connettersi al database si deve definire l'utente, la password, l'host e il nome del database proprio come se ci si dovesse connettere dal cmd. 
 In questo caso si deve inserire il valore alle costanti: 
-`
+```php
 const HOST = 'localhost';
 const USERNAME = 'username';
 const PASSWORD = 'password';
 const DATABASENAME = 'db_name';
-`
+```
 
 
 ### Login & register 

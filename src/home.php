@@ -32,17 +32,36 @@ if (isset($_SESSION["username"])) {
         $diaryResponse = '';
         $diaryResponse = $member->setDiary($beehiveId);
     }
-    
+
     // Registers a new treatment
     if (! empty($_POST["add-treatment-btn"])) {
         $treatmentResponse = '';
         $treatmentResponse = $member->registerTreatment();
     }
   
+//    $paramValue = array(
+//            $_POST["eventName"],
+//            $_POST["eventStart"],
+//            $_POST["eventEnd"],
+//            $_POST["eventType"],
+//            $_POST["eventDesc"],
+//            $_COOKIE['beehive-id']
+//        );
+//      var_dump($paramValue);
     // Registers a new event
     if (! empty($_POST["add-event-btn"])) {
         $calendarResponse = '';
-        $treatmentResponse = $member->registerEvent();
+        $calendarResponse = $member->registerEvent();
+//      var_dump($calendarResponse);
+//      $paramValue = array(
+//            $_POST["eventName"],
+//            $_POST["eventStart"],
+//            $_POST["eventEnd"],
+//            $_POST["eventType"],
+//            $_POST["eventDesc"],
+//            $_COOKIE['beehive-id']
+//        );
+//      var_dump($paramValue);
     }
         
 } else {
@@ -62,7 +81,7 @@ if (isset($_SESSION["username"])) {
   	<title>Gestione Apiario</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
+    <link rel="icon" href="images/favicon.ico" type="image/x-icon">
     <link href="assets/css/user-registration.css" type="text/css" rel="stylesheet">
     <link href="assets/css/phppot-style.css" type="text/css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,800,900" rel="stylesheet">
@@ -71,7 +90,8 @@ if (isset($_SESSION["username"])) {
       <!--   Calendario CSS   -->
     <link rel="stylesheet" type="text/css" href="evo-calendar/css/evo-calendar.css"/>
   </head>
-  <body onload="calendar()">
+  <body onload="displayCalendar()">
+    <p id="debug"></p>
     <div class="wrapper d-flex align-items-stretch">
       <!--   Sidebar   -->
       <nav id="sidebar">
@@ -279,7 +299,7 @@ if (isset($_SESSION["username"])) {
           
           <form name="event-form" action="" method="post" onsubmit="return eventValidation()">
               <?php
-                  if (! empty($diaryResponse["status"])) {
+                  if (! empty($calendarResponse["status"])) {
               ?>
 
               <?php
@@ -313,7 +333,7 @@ if (isset($_SESSION["username"])) {
                   <div class="form-label">
                       Data inizio <span class="required error" id="eventStart-info"></span>
                   </div>
-                  <input class="input-box-330" type="number" name="eventStart" id="eventStart" min="0" value="">
+                  <input class="input-box-330" type="date" name="eventStart" id="eventStart" value="">
                 </div>
               </div>
               <div class="row">
@@ -321,13 +341,13 @@ if (isset($_SESSION["username"])) {
                   <div class="form-label">
                       Data fine <span class="required error" id="eventEnd-info"></span>
                   </div>
-                  <input class="input-box-330" type="number" name="eventEnd" id="eventEnd" min="0" value="">
+                  <input class="input-box-330" type="date" name="eventEnd" id="eventEnd" value="">
                 </div>
               </div>
               <div class="row">
                 <div class="inline-block">
                   <div class="form-label">
-                      Tipo <span class="required error" id="eventType-info"></span>
+                      Tipo <span class="error" id="eventType-info"></span>
                   </div>
                   <select name="eventType" id="eventType">
                     <option value="event">Evento</option>
@@ -336,7 +356,14 @@ if (isset($_SESSION["username"])) {
                   </select>
                 </div>
               </div>
-              <textarea id="eventDesc" name="eventDesc" rows="4" cols="50"></textarea>
+            <div class="row">
+                <div class="inline-block">
+                  <div class="form-label">
+                    Descrizione <span class="error" id="eventDesc-info"></span>
+                  </div>
+                  <textarea id="eventDesc" name="eventDesc" rows="4" cols="50"></textarea>
+                </div>
+              </div>
               <br><br>
               <div class="row">
                 <input class="btn btn-primary" type="submit" name="add-event-btn" id="add-event-btn" value="Aggiungi">
@@ -404,57 +431,54 @@ if (isset($_SESSION["username"])) {
               ?>
           </table>
           <!--    Add treatments form   -->
-          <div id="add-treatment-form" class="phppot-container">
-            
-            <div class="sign-up-container">
-              <div class="title-chapter"> 
-                <form name="add-treatment" action="" method="post" onsubmit="return treatmentValidation()">
-                  <h5>Aggiungi Trattamento</h5>
-                  <?php
-                      if (! empty($treatmentResponse["status"])) {
-                  ?>
+          <div class="sign-up-container">
+            <div class="title-chapter"> 
+              <form name="add-treatment" action="" method="post" onsubmit="return treatmentValidation()">
+                <h5>Aggiungi Trattamento</h5>
+                <?php
+                    if (! empty($treatmentResponse["status"])) {
+                ?>
 
-                  <?php
-                      if ($treatmentResponse["status"] == "error") {
-                  ?>
+                <?php
+                    if ($treatmentResponse["status"] == "error") {
+                ?>
 
-                  <div class="server-response error-msg">
-                      <?php echo $treatmentResponse["message"]; ?>
-                  </div>
+                <div class="server-response error-msg">
+                    <?php echo $treatmentResponse["message"]; ?>
+                </div>
 
-                  <?php
-                      } else if ($treatmentResponse["status"] == "success") {
-                  ?>
+                <?php
+                    } else if ($treatmentResponse["status"] == "success") {
+                ?>
 
-                  <div class="server-response success-msg">
-                      <?php echo $treatmentResponse["message"]; ?>
-                  </div>
-                  <?php
-                      } }
-                  ?>
+                <div class="server-response success-msg">
+                    <?php echo $treatmentResponse["message"]; ?>
+                </div>
+                <?php
+                    } }
+                ?>
 
-                  <div class="error-msg" id="error-msg"></div>
-                  <div class="row">
-                    <div class="inline-block">
-                      <div class="form-label">
-                          Data <span class="required error" id="treatmentDate-info"></span>
-                      </div>
-                      <input class="input-box-330" type="date" name="treatmentDate" id="treatmentDate" value="" >
+                <div class="error-msg" id="error-msg"></div>
+                <div class="row">
+                  <div class="inline-block">
+                    <div class="form-label">
+                      Data <span class="required error" id="treatmentDate-info"></span>
                     </div>
+                    <input class="input-box-330" type="date" name="treatmentDate" id="treatmentDate" value="" >
                   </div>
-                  <div class="row">
-                    <div class="inline-block">
-                      <div class="form-label">
-                          Durata [giorni] <span class="required error" id="treatmentDuration-info"></span>
-                      </div>
-                      <input class="input-box-330" type="number" name="treatmentDuration" id="treatmentDuration" min="0" value="">
+                </div>
+                <div class="row">
+                  <div class="inline-block">
+                    <div class="form-label">
+                      Durata [giorni] <span class="required error" id="treatmentDuration-info"></span>
                     </div>
+                    <input class="input-box-330" type="number" name="treatmentDuration" id="treatmentDuration" min="0" value="">
                   </div>
-                  <div class="row">
-                    <input class="btn btn-primary" type="submit" name="add-treatment-btn" id="add-treatment-btn"  class="btn btn-primary" value="Conferma">
-                  </div>
-                </form>
-              </div>
+                </div>
+                <div class="row">
+                  <input class="btn btn-primary" type="submit" name="add-treatment-btn" id="add-treatment-btn" class="btn btn-primary" value="Conferma">
+                </div>
+              </form>
             </div>
           </div>
         </div>
@@ -493,10 +517,12 @@ if (isset($_SESSION["username"])) {
         /**
          * Display the calendar.
          */
-        function calendar() {
+        function displayCalendar() {
+          Events = [];
+          
           $('#calendar').evoCalendar({
               calendarEvents: Events,
-              format:'dd/mm/yyyy',
+//              format:'dd/mm/yyyy',
   //            titleFormat:'MM yyyy',
               todayHighlight: true,
               sidebarDisplayDefault: false,
@@ -513,7 +539,13 @@ if (isset($_SESSION["username"])) {
        * @param desc description of the event
        * @return true if the event is added successfully
        */
-      function addEvents(name, startDate, endDate, type, desc){
+      function addEvent(name, startDate, endDate, type, desc) {
+        console.log("adding event...");
+        console.log("name: "+name);
+        console.log("start: "+startDate);
+        console.log("end: "+endDate);
+        console.log("type: "+type);
+        console.log("desc: "+desc);
         var date;
         
         if (startDate == endDate) {
@@ -521,15 +553,24 @@ if (isset($_SESSION["username"])) {
         } else {
           date = "["+startDate+","+endDate+"]";
         }
-
-        $("#calendar").evoCalendar('addCalendarEvent', [{
-          id:eventId,
-          name:name,
-          date:date,
-          description:desc,
-          type:type
-        }]);
+        console.log("date: "+date);
+        var demo = {
+          id: eventId,
+          name: name,
+          date: date,
+          description: desc,
+          type: type
+        };
+//        var jsonEvent = JSON.stringify(event);
+//        var data = "id:"+eventId+",name:"+name+",date:"+date+",description:"+desc+",type:"+type;
         
+        $("#calendar").evoCalendar('addCalendarEvent', [{
+          id: eventId,
+          name: name,
+          date: date,
+          description: desc,
+          type: type
+        }]);
         eventId++;
         /*$("#calendar").evoCalendar('addCalendarEvent', [{
           id:'1',
@@ -560,7 +601,7 @@ if (isset($_SESSION["username"])) {
        * @return If all the values are ok it returns true.
        */
       function eventValidation() {
-        var inputs = [];
+        console.log("data validation");
         var valid = true;
 
         $("#eventName").removeClass("error-field");
@@ -595,21 +636,23 @@ if (isset($_SESSION["username"])) {
             $("#eventEnd").addClass("error-field");
             valid = false;
         }
-        if (startDateDate == "") {
+        if (startDate == "") {
             $("#eventStart-info").html("required.").css("color", "#ee0000").show();
             $("#eventStart").addClass("error-field");
             valid = false;
         }
         
         if (valid == false) {
+        console.log("data false");
             $('.error-field').first().focus();
             valid = false;
+          return valid;
         } else {
+        console.log("data true -> add event");
           addEvent(name, startDate, endDate, type, desc); 
           valid = true;
+          return valid;
         }
-
-        return valid;
       }
       
       /**

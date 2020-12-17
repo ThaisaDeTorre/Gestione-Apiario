@@ -11,6 +11,7 @@ if (! empty($_POST["login-btn"])) {
 <html>
 <head>
     <TITLE>Login</TITLE>
+    <link rel="icon" href="images/favicon.ico" type="image/x-icon">
     <link href="assets/css/phppot-style.css" type="text/css" rel="stylesheet" />
     <link href="assets/css/user-registration.css" type="text/css" rel="stylesheet" />
     <script src="assets/js/jquery.min.js"></script>

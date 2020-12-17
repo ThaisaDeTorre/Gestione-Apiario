@@ -35,6 +35,7 @@ if (isset($_SESSION["username"])) {
     if (! empty($_POST["selected-beehive"]) && ! empty($_POST["beehive"])) {
       // goes to che home page of the beehive selected
       $member->selectBeehive($_POST["beehive"]);
+      
     }
   
 } else {
@@ -54,7 +55,7 @@ if (isset($_SESSION["username"])) {
   	<title>Seleziona Apiario</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-      
+    <link rel="icon" href="images/favicon.ico" type="image/x-icon">
     <link href="assets/css/user-registration.css" type="text/css" rel="stylesheet" />
     <link href="assets/css/phppot-style.css" type="text/css" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,800,900" rel="stylesheet">
@@ -176,7 +177,7 @@ if (isset($_SESSION["username"])) {
         <!--     Select Beehive form     -->
         <div class="title-chapter"> 
           <form name="manage-beehive" action="" method="post" onsubmit="return true">  
-            <h3>Seleziona l'arnia</h3>
+            <h3>Seleziona l'arnia per gestirla</h3>
             <?php
                 if (! empty($deleteResponse["status"])) {
             ?>
@@ -212,7 +213,7 @@ if (isset($_SESSION["username"])) {
                         }
                     }
                     ?>
-                    <input id="delete-beehive" class="btn btn-primary" type="submit" value="Elimina" name="delete-beehive"><br>
+                    <input id="delete-beehive" class="btn btn-primary" type="submit" value="Elimina" name="delete-beehive"><br><br>
 
                     <input id="selected-beehive" class="btn btn-primary" type="submit" value="Seleziona" name="selected-beehive">
                     <?php

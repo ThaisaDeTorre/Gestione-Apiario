@@ -117,7 +117,7 @@ fatto di avere un database con gli elementi al suo interno.
 
 ### Use case
 
-![use case](https://github.com/ThaisaDeTorre/Gestione-Apiario/blob/master/Documenti/use_case.png)
+![use case](https://github.com/ThaisaDeTorre/Gestione-Apiario/blob/master/Documenti/use_case.PNG)
 
 
 ### Pianificazione
@@ -137,7 +137,7 @@ Secondo la pianificazione le prime lezioni saranno dedicate all'analisi e alla p
   - Open weather API: API per prendere i dati meteo in tempo reale
  
   
-  La gestione dell'apiario sarà una web app, percui sarà accessibile da qualsiasi dispositivo con connessione ad internet. Non è necessario avere un hardware potente.
+  La gestione dell'apiario sarà una web app, per cui sarà accessibile da qualsiasi dispositivo con connessione ad internet. Non è necessario avere un hardware potente.
 
 
 ## Progettazione
@@ -282,24 +282,120 @@ btn on click
 
 ## Implementazione
 
-In questo capitolo dovrà essere mostrato come è stato realizzato il
-lavoro. Questa parte può differenziarsi dalla progettazione in quanto il
-risultato ottenuto non per forza può essere come era stato progettato.
+Questo progetto necessita di un web server su cui mettere il sito, per cui ho cominciato con il creare una macchina virtuale Windows 10 per poter installare WAMP (Windows, Apache, MySQL, Php). Una volta creata ho scaricato e installato WAMP sulla VM per poter lavorare.
 
-Sulla base di queste informazioni il lavoro svolto dovrà essere
-riproducibile.
+### Database
+Una volta che il web server funziona si inizia a creare il database basandosi sugli schemi fatti in precedenza. Il file sql contenente tutta la struttura del database è molto semplice, contiene le cinque tabelle necessarie e basta, i dati verranno inseriti quando l'utente ne aggiungerà usando il sito.
+La connessione al database avviene nella classe DataSource.php, per connettersi al database si deve definire l'utente, la password, l'host e il nome del database proprio come se ci si dovesse connettere dal cmd. 
+In questo caso si deve inserire il valore alle costanti: 
+`
+const HOST = 'localhost';
+const USERNAME = 'username';
+const PASSWORD = 'password';
+const DATABASENAME = 'db_name';
+`
 
-In questa parte è richiesto l’inserimento di codice sorgente/print
-screen di maschere solamente per quei passaggi particolarmente
-significativi e/o critici.
 
-Inoltre dovranno essere descritte eventuali varianti di soluzione o
-scelte di prodotti con motivazione delle scelte.
+### Login & register 
+Per il form del login e la registrazione dell'utente ho usato del codice preso online da phppot, l'ho studiato e adattato alle mie necessità. 
+Quando l'utente inserisce i dati nel form per il login e preme il pulsante, il form va a richiamare la funzione `loginValidation()` che va a controllare la validità dei dati passati dall'utente. Se i dati sono validi ritorna `true`, altrimenti ritorna `false`. 
+Con php controllo se il `$_POST` del bottone è vuoto, se non lo è significa che i valori di input sono validi quindi il form passa a php i valori di input. A questo punto richiamo la funtione `loginMember()` per loggare l'utente; il metodo ritorna lo stato del login, se è andato a buon fine o meno.
+`
+public function loginMember()
+    {
+        // select the user based on the username
+        $memberRecord = $this->getMember($_POST["username"]);
+        $loginPassword = false;
+      
+        // check if there is a user with that username
+        if (! empty($memberRecord)) {
+            // check if the password is not null or empty
+            if (! empty($_POST["login-password"]) && ! is_null($_POST["login-password"])) {
+                $password = $_POST["login-password"];
+            }
+            $hashedPassword = $memberRecord[0]["password"];
+            $loginPassword = false;
+            
+            if (password_verify($password, $hashedPassword)) {
+                $loginPassword = true;
+            }
+        } else {
+            $loginPassword = false;
+        }
+        
+        // if the password is right redirect the user to the select-beehive page
+        if ($loginPassword) {
+            // login sucess so store the member's username in
+            // the session
+            session_start();
+            $_SESSION["username"] = $memberRecord[0]["username"];
+            session_write_close();
+            $url = "./select-beehive.php";
+            header("Location: $url");
+        } else if (!$loginPassword) {
+            $loginStatus = "Username o password errata.";
+            return $loginStatus;
+        }
+    }
+`
 
-Non deve apparire nessuna forma di guida d’uso di librerie o di
-componenti utilizzati. Eventualmente questa va allegata.
 
-Per eventuali dettagli si possono inserire riferimenti ai diari.
+`
+public function registerMember()
+    {
+        $isUsernameExists = $this->isUsernameExists($_POST["username"]);
+        $isEmailExists = $this->isEmailExists($_POST["email"]);
+      
+        // check if username or email already exist in the database
+        if ($isUsernameExists) {
+            $response = array(
+                "status" => "error",
+                "message" => "Username already exists."
+            );
+        } else if ($isEmailExists) {
+            $response = array(
+                "status" => "error",
+                "message" => "Email already exists."
+            );
+        } else {
+            // hashed the password if it's not empty
+            if (! empty($_POST["signup-password"])) {
+                $hashedPassword = password_hash($_POST["signup-password"], PASSWORD_DEFAULT);
+            }
+            // insert values in the database
+            $query = 'INSERT INTO user (username, password, email) VALUES (?, ?, ?)';
+            $paramType = 'sss';
+            $paramValue = array(
+                $_POST["username"],
+                $hashedPassword,
+                $_POST["email"]
+            );
+            $memberId = $this->ds->insert($query, $paramType, $paramValue);
+            if (! empty($memberId)) {
+                $response = array(
+                    "status" => "success",
+                    "message" => "You have registered successfully."
+                );
+            }
+        }
+        return $response;
+    }
+    `
+### Select beehive
+  show
+  add
+  delete
+### Home
+  meteo
+  calendar
+    show
+    add
+  treatment
+    show
+    add
+  data
+    show
+
 
 ## Test
 Dopo ogni aggiunta nel codice ne testavo il funzionamento, per esempio dopo aver finito di scrivere il form per l'aggiunta delle arnie e messo i controlli testavo se mi prendeva comunque i campi vuoti o inserivo testo nella data di nascita della regina. 

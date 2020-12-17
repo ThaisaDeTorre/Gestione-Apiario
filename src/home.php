@@ -65,7 +65,7 @@ if (isset($_SESSION["username"])) {
       <!--   Calendario CSS   -->
     <link rel="stylesheet" type="text/css" href="evo-calendar/css/evo-calendar.css"/>
   </head>
-  <body>
+  <body onload="calendar()">
     <div class="wrapper d-flex align-items-stretch">
       <!--   Sidebar   -->
       <nav id="sidebar">
@@ -304,7 +304,7 @@ if (isset($_SESSION["username"])) {
               </textarea>
               <br><br>
               <div class="row">
-                <input class="btn" type="submit" name="diary-btn" id="diary-btn" value="Salva Modifiche">
+                <input class="btn btn-primary" type="submit" name="diary-btn" id="diary-btn" value="Salva Modifiche">
               </div>
           </form>
 		</div>
@@ -378,7 +378,7 @@ if (isset($_SESSION["username"])) {
                     </div>
                   </div>
                   <div class="row">
-                    <input class="btn" type="submit" name="add-treatment-btn" id="add-treatment-btn"  class="btn btn-primary" value="Conferma">
+                    <input class="btn btn-primary" type="submit" name="add-treatment-btn" id="add-treatment-btn"  class="btn btn-primary" value="Conferma">
                   </div>
                 </form>
               </div>

@@ -212,9 +212,9 @@ if (isset($_SESSION["username"])) {
                         }
                     }
                     ?>
-                    <input id="delete-beehive" class="btn" type="submit" value="Elimina" name="delete-beehive"><br>
+                    <input id="delete-beehive" class="btn btn-primary" type="submit" value="Elimina" name="delete-beehive"><br>
 
-                    <input id="selected-beehive" class="btn" type="submit" value="Seleziona" name="selected-beehive">
+                    <input id="selected-beehive" class="btn btn-primary" type="submit" value="Seleziona" name="selected-beehive">
                     <?php
                 }
             ?>
@@ -269,7 +269,7 @@ if (isset($_SESSION["username"])) {
                         </div>
                     </div>
                     <div class="row">
-                        <input class="btn" type="submit" class="btn" name="add-beehive-btn" id="add-beehive-btn" value="Conferma">
+                        <input class="btn" type="submit" class="btn btn-primary" name="add-beehive-btn" id="add-beehive-btn" value="Conferma">
                     </div>
                 </form>
             </div>
